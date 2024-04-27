@@ -1,0 +1,210 @@
+{
+  "countryCode": "CM",
+  "countryName": "Cameroun",
+  "currency": "CFA",
+  "isActive": "true",
+  "cities": [
+
+    {
+      "id": 1,
+      "cityCode": "BAF",
+      "isActive": true,
+      "name": "Bafoussam",
+      "quarters": [
+      
+        {
+          "id": 1,
+          "name": "Marche A",
+          "deliveryCost": 1000
+        },
+        {
+          "id": 2,
+          "name": "Gare Routiere",
+          "deliveryCost": 1000
+        },
+        {
+          "id": 3,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "cityCode": "",
+      "isActive": false,
+      "name": "Bamenda",
+      "quarters": [
+       
+        {
+          "id": 1,
+          "name": "Center Bamenda",
+          "deliveryCost": 1000
+        },
+        {
+          "id": 0,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "cityCode": "BUA",
+      "isActive": true,
+      "name": "Buea",
+      "quarters": [
+        
+        {
+          "id": 1,
+          "name": "Center Buea",
+          "deliveryCost": 1000
+        },
+        {
+          "id": 2,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "cityCode": "DLA",
+      "isActive": true,
+      "name": "Douala",
+      "quarters": [
+       
+        { "id": 1, "name": "Akwa", "deliveryCost": 1000 },
+        { "id": 2, "name": "Bonaberi", "deliveryCost": 1000 },
+        { "id": 3, "name": "Bonanjo", "deliveryCost": 1000 },
+        { "id": 4, "name": "Bonapriso", "deliveryCost": 1000 },
+        { "id": 5, "name": "Bali", "deliveryCost": 1000 },
+        { "id": 6, "name": "Bepanda", "deliveryCost": 1000 },
+        { "id": 7, "name": "Deido", "deliveryCost": 1000 },
+        { "id": 8, "name": "Nyalla", "deliveryCost": 1000 },
+        { "id": 9, "name": "New Bell", "deliveryCost": 1000 },
+        { "id": 10, "name": "Lendi", "deliveryCost": 1000 },
+        { "id": 11, "name": "PK12", "deliveryCost": 1000 },
+        { "id": 12, "name": "Bonamoussadi", "deliveryCost": 1000 },
+        { "id": 13, "name": "Kotto", "deliveryCost": 1000 },
+        { "id": 14, "name": "Yassa", "deliveryCost": 1000 },
+        { "id": 15, "name": "Zone Bassa", "deliveryCost": 1000 },
+        { "id": 16, "name": "Japoma", "deliveryCost": 1000 },
+        {
+          "id": 15,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "cityCode": "GAA",
+      "isActive": true,
+      "name": "Garoua",
+      "quarters": [
+        
+        { "id": 1, "name": "Barmare", "deliveryCost": 1000 },
+        { "id": 2, "name": "Boulai", "deliveryCost": 1000 },
+        { "id": 3, "name": "Houssa", "deliveryCost": 1000 },
+        { "id": 4, "name": "Medine", "deliveryCost": 1000 },
+        { "id": 5, "name": "Marouare", "deliveryCost": 1000 },
+        { "id": 6, "name": "Roumde Adja", "deliveryCost": 1000 },
+        { "id": 7, "name": "Sabougari", "deliveryCost": 1000 },
+        { "id": 8, "name": "Yelwa", "deliveryCost": 1000 },
+        { "id": 9, "name": "Djambotou", "deliveryCost": 1000 },
+        { "id": 10, "name": "Poumpoumré", "deliveryCost": 1000 },
+        {
+          "id": 11,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "cityCode": "MAR",
+      "isActive": true,
+      "name": "Maroua",
+      "quarters": [
+       
+        { "id": 1, "name": "Damayo", "deliveryCost": 1000 },
+        { "id": 2, "name": "Diguiriwo", "deliveryCost": 1000 },
+        { "id": 4, "name": "Djarengol", "deliveryCost": 1000 },
+        { "id": 9, "name": "Djoulgouf", "deliveryCost": 1000 },
+        { "id": 2, "name": "Hardeo", "deliveryCost": 1000 },
+        { "id": 3, "name": "Kongola", "deliveryCost": 1000 },
+        { "id": 5, "name": "Kodek", "deliveryCost": 1000 },
+        { "id": 6, "name": "Pallar", "deliveryCost": 1000 },
+        { "id": 7, "name": "Zokok", "deliveryCost": 1000 },
+        {
+          "id": 8,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "cityCode": "NGE",
+      "isActive": true,
+      "name": "Ngaoundéré",
+      "quarters": [
+      
+        { "id": 1, "name": "Dang", "deliveryCost": 1000 },
+        { "id": 2, "name": "Hore-Bini", "deliveryCost": 1000 },
+        { "id": 3, "name": "Beka-Hossere", "deliveryCost": 1000 },
+        { "id": 4, "name": "Kantalan", "deliveryCost": 1000 },
+        { "id": 5, "name": "Margol", "deliveryCost": 1000 },
+        { "id": 6, "name": "Marma", "deliveryCost": 1000 },
+        { "id": 7, "name": "Marza", "deliveryCost": 1000 },
+        { "id": 8, "name": "Wakwa", "deliveryCost": 1000 },
+        {
+          "id": 9,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "cityCode": "YDE",
+      "isActive": true,
+      "name": "Yaoundé",
+      "quarters": [
+        
+        { "id": 1, "name": "Eleveur", "deliveryCost": 1000 },
+        { "id": 2, "name": "Efoulan", "deliveryCost": 1000 },
+        { "id": 3, "name": "Elig Essono", "deliveryCost": 1000 },
+        { "id": 4, "name": "Elig-Effa", "deliveryCost": 1000 },
+        { "id": 5, "name": "Elig-Edzoa", "deliveryCost": 1000 },
+        { "id": 6, "name": "Biyem-Assi", "deliveryCost": 1000 },
+        { "id": 7, "name": "Biyemasse", "deliveryCost": 1000 },
+        { "id": 8, "name": "Essos", "deliveryCost": 1000 },
+        { "id": 9, "name": "Etoudi", "deliveryCost": 1000 },
+        { "id": 10, "name": "Etoa Meki", "deliveryCost": 1000 },
+        { "id": 11, "name": "Mimboman", "deliveryCost": 1000 },
+        { "id": 12, "name": "Mendong", "deliveryCost": 1000 },
+        { "id": 13, "name": "Mvan", "deliveryCost": 1000 },
+        { "id": 14, "name": "Melen", "deliveryCost": 1000 },
+        { "id": 15, "name": "Nkomkana", "deliveryCost": 1000 },
+        { "id": 16, "name": "Ngousso", "deliveryCost": 1000 },
+        { "id": 17, "name": "Madagascar", "deliveryCost": 1000 },
+        { "id": 18, "name": "Cite Verte", "deliveryCost": 1000 },
+        { "id": 19, "name": "Mvog-Ada", "deliveryCost": 1000 },
+        { "id": 20, "name": "Nlongkak", "deliveryCost": 1000 },
+        { "id": 21, "name": "Simbock", "deliveryCost": 1000 },
+        { "id": 22, "name": "Oloezoa", "deliveryCost": 1000 },
+        { "id": 23, "name": "Obili", "deliveryCost": 1000 },
+        { "id": 24, "name": "Tsinga", "deliveryCost": 1000 },
+        { "id": 25, "name": "Nvam", "deliveryCost": 1000 },
+        { "id": 26, "name": "Kondengui", "deliveryCost": 1000 },
+        {
+          "id": 25,
+          "isActive": false,
+          "name": "Quartier de livraison"
+        }
+      ]
+    }
+  ]
+}

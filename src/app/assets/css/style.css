@@ -13,14 +13,43 @@ p {
 .mt-4 {
   margin-bottom: 0 !important;
 }
+.card {
+  border-radius: calc(1.25rem) !important;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.card-header {
+  border-radius: calc(1.25rem - 1px) calc(1.25rem - 1px) 0 0 !important;
+}
+.card-header .card-title {
+  margin-bottom: 0 !important;
+}
 .card-body {
+  border-radius: 0 !important;
   padding: 0 !important;
 }
-.cs-message__content {
-  background-color: #e2e3e5 !important;
+.card-body.px-2 {
+  padding-left: .5rem !important;
+  padding-right: .5rem !important;
 }
-.cs-message-list .cs-message.cs-message--outgoing, .cs-message-list .cs-message-group.cs-message-group--outgoing {
-  display: contents !important;
+.card-body.py-2 {
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important;
+}
+.card-body .form-group {
+  margin-bottom: .5rem !important;
+}
+.card-body .form-group:last-of-type {
+  margin-bottom: 0 !important;
+}
+.card-footer {
+  background: transparent !important;
+  border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
+}
+.card-footer .btn.rounded-lg::after {
+  display: none;
+}
+.card-footer .btn.rounded-lg:last-of-type {
+  margin-left: .1rem;
 }
 .justify-content-start, .justify-content-end {
   padding: 0 0 .8em 0;
@@ -31,104 +60,96 @@ p {
 .justify-content-start.message-group, .justify-content-end.message-group {
   padding: 0;
 }
-.cs-message-group__messages .justify-content-start:first-of-type, .justify-content-end:first-of-type {
-  padding: 0 0 .8em 0;
+.nav-pills .nav-link {
+  color: rgba(0, 0, 0, .87) !important;
+  background: transparent !important;
+  border: solid 2px transparent !important;
+  border-radius: .7em;
 }
-.justify-content-start .cs-message--outgoing .cs-message__content {
-  border-radius: .7em .7em .7em .0em !important;
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: transparent !important;
+  border-color: #28a745 !important;
 }
-.justify-content-end .cs-message--outgoing .cs-message__content {
-  border-radius: .7em .7em .0em .7em !important;
+.nav-pills .nav-link.invalid {
+  border-color: #dc3545 !important;
 }
-.cs-message-list__scroll-wrapper {
-  padding: 0 .8em 0 .8em !important;
+.tab-pane.slide {
+  animation: slide-to-up 500ms ease-out !important;
 }
-.cs-main-container {
-  border: none !important;
+.tab-pane.slide.active {
+  animation: slide-from-down 500ms ease-out !important;
 }
-.card {
-  border-radius: calc(1.25rem) !important;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+@keyframes slide-to-up {
+  0% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-100%);
+    -moz-transform: translateY(-100%);
+    -ms-transform: translateY(-100%);
+    -o-transform: translateY(-100%);
+    transform: translateY(-100%);
+  }
 }
-.card-header {
-  border-radius: calc(1.25rem - 1px) calc(1.25rem - 1px) 0 0 !important;
+@keyframes slide-from-down {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    -o-transform: translateY(100%);
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+  }
 }
-.card-body {
-  border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
+.form-control:focus {
+  border-color: #ced4da !important;
+  box-shadow: none !important;
 }
-.cs-main-container {
-  border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
+.form-control.is-invalid:focus, .was-validated .form-control:invalid:focus {
+  border-color: #dc3545 !important;
 }
-.card-footer {
-  border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
+.form-control.is-valid, .was-validated .form-control:valid {
+  border-color: #28a745 !important;
 }
-.cs-chat-container .cs-message-input {
-  border-top: solid 1px #28a745 !important;
+.form-group .form-control {
   border-right: none !important;
-  border-bottom: none !important;
+}
+.form-group.invalid .form-control {
+  border-color: #dc3545 !important;
+}
+.form-group.invalid .form-control:focus {
+  border-color: #dc3545 !important;
+}
+.form-group.valid .form-control {
+  border-color: #28a745 !important;
+}
+.form-group.valid .form-control:focus {
+  border-color: #28a745 !important;
+}
+.form-group .input-group-text {
   border-left: none !important;
-  border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
 }
-.cs-message-input__content-editor-wrapper {
-  background-color: #e2e3e5 !important;
-}
-.cs-message-input__content-editor-container {
-  background-color: #e2e3e5 !important;
-}
-.cs-message-input__content-editor {
-  background-color: #e2e3e5 !important;
-}
-.cs-button {
-  color: #28a745 !important;
-}
-.cs-message-group__messages .cs-button {
-  color: rgba(0, 0, 0, .87) !important;
-  font-size: .91em !important;
-}
-.cs-button.btn-outline-success {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: transparent !important;
-  border-color: #28a745 !important;
-}
-.cs-button.btn-outline-success.focus, .cs-button.btn-outline-success:focus {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: transparent !important;
-  border-color: #28a745 !important;
-  box-shadow: none !important;
-}
-.cs-button.btn-outline-danger {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: transparent !important;
+.form-group.invalid .input-group-text {
   border-color: #dc3545 !important;
 }
-.cs-button.btn-outline-danger.focus, .cs-button.btn-outline-danger:focus {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: transparent !important;
-  border-color: #dc3545 !important;
-  box-shadow: none !important;
+.form-group.valid .input-group-text {
+  border-color: #28a745 !important;
 }
-.cs-button.btn-outline-warning {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: transparent !important;
-  border-color: #ffc107 !important;
-}
-.cs-button.btn-outline-warning.focus, .cs-button.btn-outline-warning:focus {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: transparent !important;
-  border-color: #ffc107 !important;
-  box-shadow: none !important;
-}
-.justify-content-start .cs-avatar.cs-avatar--md {
-  width: 35px;
-  height: 35px;
-  min-width: 35px;
-  min-height: 35px;
-  margin-right: 5px;
-}
-.justify-content-end .cs-avatar.cs-avatar--md {
-  width: 35px;
-  height: 35px;
-  min-width: 35px;
-  min-height: 35px;
-  margin-left: 5px;
+.table {
+  margin-bottom: 0 !important;
 }

@@ -11,6 +11,7 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^2.0.3",
     "@ducanh2912/next-pwa": "^10.2.6",
+    "axios": "^1.6.8",
     "bootstrap": "^4.6.2",
     "bootstrap4-datetimepicker": "^5.2.3",
     "jquery": "^3.7.1",
