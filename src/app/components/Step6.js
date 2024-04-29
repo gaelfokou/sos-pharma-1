@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const Step6 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, handleChange, formData}) => {
+const Step6 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, handleChange, handleFocus, formData}) => {
   useEffect(() => {
   }, [page, formData]);
 

@@ -14,11 +14,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <Header />
-        <div className="container">
-          {children}
+        <div className="d-flex flex-column justify-content-between vh-100">
+          <div className="d-flex flex-column">
+            <Header />
+            <div className="container">
+              {children}
+            </div>
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </body>
     </html>
   );

@@ -38,6 +38,10 @@ p {
 .card-body .form-group {
   margin-bottom: .5rem !important;
 }
+.card-body .form-group.scroll-table {
+  max-height: 30vh;
+  overflow-y: auto;
+}
 .card-body .form-group:last-of-type {
   margin-bottom: 0 !important;
 }

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const Step9 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, handleChange, formData}) => {
+const Step9 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, handleChange, handleFocus, formData}) => {
   useEffect(() => {
   }, [page, formData]);
 
@@ -24,6 +24,7 @@ const Step9 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                 placeholder="Tapez votre réponse ici..."
                 value={formData.step9}
                 onChange={handleChange}
+                onFocus={handleFocus}
                 required
               />
               <div className="input-group-append">
@@ -31,11 +32,11 @@ const Step9 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
               </div>
             </div>
           </div>
-          {formData.stepResult9.length > 0 && (<div className="form-group">
+          {formData.stepResult9.length > 0 && (<div className="form-group scroll-table">
             <table className="table table-striped table-hover table-9">
               <tbody>
                 {formData.stepResult9.map((drug, index) => (
-                  <tr key={index} data-page="step9" data-value={drug.name}>
+                  <tr key={index} data-value={drug.name}>
                     <td>{`${drug.name}`}</td>
                   </tr>
                 ))}
