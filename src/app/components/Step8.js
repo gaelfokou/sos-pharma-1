@@ -9,7 +9,7 @@ const Step8 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Step 8 : Dans quelle ville vous trouvez-vous ?</h6>
+        <h6 className="card-title">Étape 7 : Dans quelle ville vous trouvez-vous ?</h6>
       </div>
       <div className="card-body px-2 py-2">
         <form id="form-8" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>

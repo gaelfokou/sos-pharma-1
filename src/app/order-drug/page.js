@@ -381,25 +381,24 @@ const OrderDrug = () => {
       <div className="row">
         <div className="col pt-5">
           <a className="h6 text-success" href="/">SOS Pharma</a>
-          <h2 className="mt-4">Commande des médicaments</h2>
         </div>
       </div>
       <div className="row">
         <div className="col-md-12 pt-5">
           <div className="nav flex-column nav-pills" id="pills-tab" role="tablist" aria-orientation="vertical">
-            <button type="button" className={`nav-link ${page === 1 ? '' : 'd-none'}`} id="pills-1-tab" data-toggle="pill" data-target="#pills-1" type="button" role="tab" aria-controls="pills-1" aria-selected="false">Step 1 / 10</button>
-            <button type="button" className={`nav-link ${page === 2 ? '' : 'd-none'}`} id="pills-2-tab" data-toggle="pill" data-target="#pills-2" type="button" role="tab" aria-controls="pills-2" aria-selected="false">Step 2 / 10</button>
-            <button type="button" className={`nav-link ${page === 3 ? '' : 'd-none'}`} id="pills-3-tab" data-toggle="pill" data-target="#pills-3" type="button" role="tab" aria-controls="pills-3" aria-selected="false">Step 3 / 10</button>
-            <button type="button" className={`nav-link ${page === 4 ? '' : 'd-none'}`} id="pills-4-tab" data-toggle="pill" data-target="#pills-4" type="button" role="tab" aria-controls="pills-4" aria-selected="false">Step 4 / 10</button>
-            <button type="button" className={`nav-link ${page === 5 ? '' : 'd-none'}`} id="pills-5-tab" data-toggle="pill" data-target="#pills-5" type="button" role="tab" aria-controls="pills-5" aria-selected="false">Step 5 / 10</button>
-            <button type="button" className={`nav-link ${page === 6 ? '' : 'd-none'}`} id="pills-6-tab" data-toggle="pill" data-target="#pills-6" type="button" role="tab" aria-controls="pills-6" aria-selected="false">Step 6 / 10</button>
-            <button type="button" className={`nav-link ${page === 7 ? '' : 'd-none'}`} id="pills-7-tab" data-toggle="pill" data-target="#pills-7" type="button" role="tab" aria-controls="pills-7" aria-selected="false">Step 7 / 10</button>
-            <button type="button" className={`nav-link ${page === 8 ? '' : 'd-none'}`} id="pills-8-tab" data-toggle="pill" data-target="#pills-8" type="button" role="tab" aria-controls="pills-8" aria-selected="false">Step 8 / 10</button>
-            <button type="button" className={`nav-link ${page === 9 ? '' : 'd-none'}`} id="pills-9-tab" data-toggle="pill" data-target="#pills-9" type="button" role="tab" aria-controls="pills-9" aria-selected="false">Step 9 / 10</button>
-            <button type="button" className={`nav-link ${page === 10 ? '' : 'd-none'}`} id="pills-10-tab" data-toggle="pill" data-target="#pills-10" type="button" role="tab" aria-controls="pills-10" aria-selected="false">Step 10 / 10</button>
+            <button type="button" className={`nav-link ${page === 0 ? '' : 'd-none'}`} id="pills-1-tab" data-toggle="pill" data-target="#pills-1" role="tab" aria-controls="pills-1" aria-selected="false">Étape 1 / 9</button>
+            <button type="button" className={`nav-link ${page === 2 ? '' : 'd-none'}`} id="pills-2-tab" data-toggle="pill" data-target="#pills-2" role="tab" aria-controls="pills-2" aria-selected="false">Étape 1 / 9</button>
+            <button type="button" className={`nav-link ${page === 3 ? '' : 'd-none'}`} id="pills-3-tab" data-toggle="pill" data-target="#pills-3" role="tab" aria-controls="pills-3" aria-selected="false">Étape 2 / 9</button>
+            <button type="button" className={`nav-link ${page === 4 ? '' : 'd-none'}`} id="pills-4-tab" data-toggle="pill" data-target="#pills-4" role="tab" aria-controls="pills-4" aria-selected="false">Étape 3 / 9</button>
+            <button type="button" className={`nav-link ${page === 5 ? '' : 'd-none'}`} id="pills-5-tab" data-toggle="pill" data-target="#pills-5" role="tab" aria-controls="pills-5" aria-selected="false">Étape 4 / 9</button>
+            <button type="button" className={`nav-link ${page === 6 ? '' : 'd-none'}`} id="pills-6-tab" data-toggle="pill" data-target="#pills-6" role="tab" aria-controls="pills-6" aria-selected="false">Étape 5 / 9</button>
+            <button type="button" className={`nav-link ${page === 7 ? '' : 'd-none'}`} id="pills-7-tab" data-toggle="pill" data-target="#pills-7" role="tab" aria-controls="pills-7" aria-selected="false">Étape 6 / 9</button>
+            <button type="button" className={`nav-link ${page === 8 ? '' : 'd-none'}`} id="pills-8-tab" data-toggle="pill" data-target="#pills-8" role="tab" aria-controls="pills-8" aria-selected="false">Étape 7 / 9</button>
+            <button type="button" className={`nav-link ${page === 9 ? '' : 'd-none'}`} id="pills-9-tab" data-toggle="pill" data-target="#pills-9" role="tab" aria-controls="pills-9" aria-selected="false">Étape 8 / 9</button>
+            <button type="button" className={`nav-link ${page === 10 ? '' : 'd-none'}`} id="pills-10-tab" data-toggle="pill" data-target="#pills-10" role="tab" aria-controls="pills-10" aria-selected="false">Étape 9 / 9</button>
           </div>
         </div>
-        <div className="col-md-12 py-5">
+        <div className={`col-md-12 ${page === 1 ? 'pb-5' : 'py-5'}`}>
           <div className="tab-content" id="pills-tabContent">
             <div className="tab-pane slide" id="pills-1" role="tabpanel" aria-labelledby="pills-1-tab">
               <Step1

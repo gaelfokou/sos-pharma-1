@@ -9,7 +9,7 @@ const Step5 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Step 5 : Souhaitez-vous commander un autre médicament ?</h6>
+        <h6 className="card-title">Étape 4 : Souhaitez-vous commander un autre médicament ?</h6>
       </div>
       <div className="card-body px-2 py-2">
       <form id="form-5" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
