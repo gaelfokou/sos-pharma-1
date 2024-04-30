@@ -2,7 +2,12 @@
   border-radius: 1.5rem !important;
   font-size: .9rem;
 }
-.btn.rounded-lg::after {
+.btn.rounded-lg.rounded-before::before {
+  display: inline-block;
+  content: "<--";
+  margin-right: 10px;
+}
+.btn.rounded-lg.rounded-after::after {
   display: inline-block;
   content: "-->";
   margin-left: 10px;
@@ -48,9 +53,6 @@ p {
 .card-footer {
   background: transparent !important;
   border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
-}
-.card-footer .btn.rounded-lg::after {
-  display: none;
 }
 .card-footer .btn.rounded-lg:last-of-type {
   margin-left: .1rem;
@@ -156,4 +158,25 @@ p {
 }
 .table {
   margin-bottom: 0 !important;
+}
+.table-bordered thead td, .table-bordered thead th {
+  border-bottom-width: 0 !important;
+}
+.table-bordered tfoot td, .table-bordered tfoot th {
+  font-weight: bold !important;
+}
+.btn-outline-success {
+  margin-right: .1rem !important;
+}
+.btn-outline-success:hover {
+  color: #1e7e34 !important;
+  background-color: transparent !important;
+  border-color: #1e7e34 !important;
+}
+.btn-outline-success.focus, .btn-outline-success:focus {
+  color: #1e7e34 !important;
+  box-shadow: 0 0 0 .1rem rgba(72, 180, 97, .5);
+}
+.btn-success.focus, .btn-success:focus {
+  box-shadow: 0 0 0 .1rem rgba(72, 180, 97, .5);
 }

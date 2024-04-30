@@ -43,6 +43,7 @@ const OrderDrug = () => {
     step3: "",
     stepValue3: [],
     step4: "",
+    stepValue4: [],
     step5: "",
     step6: "",
     step7: "",
@@ -122,20 +123,39 @@ const OrderDrug = () => {
           input.classList.add('valid');
         }
       });
-      setFormData({ ...formData, [input.name]: input.value });
+      if (page === 4) {
+        if (formData.stepValue3.length > formData.stepValue4.length) {
+          setFormData({ ...formData, ['step'+page]: input.value, ['stepValue'+page]: [...formData.stepValue4, input.value] });
+        } else {
+          var stepValue4 = [...formData.stepValue4];
+          stepValue4[stepValue4.length - 1] = input.value;
+          setFormData({ ...formData, ['step'+page]: input.value, ['stepValue'+page]: [...stepValue4] });
+        }
+      } else {
+        setFormData({ ...formData, [input.name]: input.value });
+      }
     } else {
-      const val = event.target.parentNode.attributes.getNamedItem('data-value');
-      if (val !== null) {
+      const data = event.target.parentNode.attributes.getNamedItem('data-value');
+      if (data !== null) {
         if (page === 2) {
+          const value = data.value.split(' : ')[0];
           if (formData.stepValue2.length > formData.stepValue3.length) {
             var stepValue2 = [...formData.stepValue2];
-            stepValue2[stepValue2.length - 1] = val.value;
-            setFormData({ ...formData, ['step'+page]: val.value, ['stepValue'+page]: [...stepValue2], ['stepResult'+page]: [] });
+            const index = drugData.findLastIndex((d) => d.name.toLowerCase() === value.toLowerCase());
+            if (index !== -1) {
+              stepValue2[stepValue2.length - 1] = drugData[index];
+            }
+            setFormData({ ...formData, ['step'+page]: data.value, ['stepValue'+page]: [...stepValue2], ['stepResult'+page]: [] });
           } else {
-            setFormData({ ...formData, ['step'+page]: val.value, ['stepValue'+page]: [...formData.stepValue2, val.value], ['stepResult'+page]: [] });
+            var stepValue2 = [...formData.stepValue2];
+            const index = drugData.findLastIndex((d) => d.name.toLowerCase() === value.toLowerCase());
+            if (index !== -1) {
+              stepValue2 = [...stepValue2, drugData[index]];
+            }
+            setFormData({ ...formData, ['step'+page]: data.value, ['stepValue'+page]: [...stepValue2], ['stepResult'+page]: [] });
           }
         } else {
-          setFormData({ ...formData, ['step'+page]: val.value, ['stepResult'+page]: [] });
+          setFormData({ ...formData, ['step'+page]: data.value, ['stepResult'+page]: [] });
         }
       }
     }
@@ -212,13 +232,19 @@ const OrderDrug = () => {
       });
       if (page === 5) {
         if (formData.step5 === "Oui") {
-          setFormData({ ...formData, step2: "", stepValue2: [], stepResult2: [], step3: "", stepValue3: [], step4: "", step5: "" });
+          setFormData({ ...formData, step2: "", stepResult2: [], step3: "", step4: "", step5: "" });
           setPage(2);
         } else {
           handleNext(event);
         }
       } else {
-        handleNext(event);
+        const submitter = event.nativeEvent.submitter.name;
+        if (submitter === "cancel") {
+          setFormData({ ...formData, step1: "", step2: "", stepValue2: [], stepResult2: [], step3: "", stepValue3: [], step4: "", stepValue4: [], step5: "", step10: "" });
+          setPage(1);
+        } else {
+          handleNext(event);
+        }
       }
     }
     form.classList.add('was-validated');
@@ -268,22 +294,22 @@ const OrderDrug = () => {
     form.classList.add('was-validated');
 
     if (page === 2) {
-      var stepResult2 = handleSearchDrug(value);
-      setFormData({ ...formData, [name]: value, stepResult2 });
+      var search = handleSearchDrug(value);
+      setFormData({ ...formData, [name]: value, stepResult2: search });
     } else if (page === 3) {
       if (formData.stepValue2.length > formData.stepValue3.length) {
-        setFormData({ ...formData, ['step'+page]: value, ['stepValue'+page]: [...formData.stepValue3, value] });
+        setFormData({ ...formData, ['step'+page]: value, ['stepValue'+page]: [...formData.stepValue3, parseInt(value)] });
       } else {
         var stepValue3 = [...formData.stepValue3];
-        stepValue3[stepValue3.length - 1] = value;
+        stepValue3[stepValue3.length - 1] = parseInt(value);
         setFormData({ ...formData, ['step'+page]: value, ['stepValue'+page]: [...stepValue3] });
       }
     } else if (page === 8) {
-      var stepResult8 = handleSearchCity(value);
-      setFormData({ ...formData, [name]: value, stepResult8 });
+      var search = handleSearchCity(value);
+      setFormData({ ...formData, [name]: value, stepResult8: search });
     } else if (page === 9) {
-      var stepResult9 = handleSearchQuarter(value);
-      setFormData({ ...formData, [name]: value, stepResult9 });
+      var search = handleSearchQuarter(value);
+      setFormData({ ...formData, [name]: value, stepResult9: search });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -300,12 +326,12 @@ const OrderDrug = () => {
 
   const handleSearchDrug = (drug) => {
     drug = drug.trim();
-    var stepResult2 = formData.stepResult2;
+    var stepResult2 = [...formData.stepResult2];
     if (drug === "") {
       stepResult2 = [];
     } else if (drug.length >= 3) {
       stepResult2 = [];
-      stepResult2 = drugData.filter((m) => m.name.toLowerCase().includes(drug.toLowerCase()));
+      stepResult2 = drugData.filter((d) => d.name.toLowerCase().includes(drug.toLowerCase()));
     }
     const n = 10;
     if (stepResult2.length > n) {
@@ -316,12 +342,12 @@ const OrderDrug = () => {
 
   const handleSearchCity = (city) => {
     city = city.trim();
-    var stepResult8 = formData.stepResult8;
+    var stepResult8 = [...formData.stepResult8];
     if (city === "") {
       stepResult8 = [];
     } else if (city.length >= 3) {
       stepResult8 = [];
-      stepResult8 = cityData.filter((m) => m.name.toLowerCase().includes(city.toLowerCase()));
+      stepResult8 = cityData.filter((c) => c.name.toLowerCase().includes(city.toLowerCase()));
     }
     const n = 10;
     if (stepResult8.length > n) {
@@ -332,14 +358,14 @@ const OrderDrug = () => {
 
   const handleSearchQuarter = (quarter) => {
     quarter = quarter.trim();
-    var stepResult9 = formData.stepResult9;
+    var stepResult9 = [...formData.stepResult9];
     if (quarter === "") {
       stepResult9 = [];
     } else if (quarter.length >= 3) {
       stepResult9 = [];
-      const index = quarterData.findLastIndex((m) => m.key.toLowerCase() === formData.step8.toLowerCase());
+      const index = quarterData.findLastIndex((q) => q.key.toLowerCase() === formData.step8.toLowerCase());
       if (index !== -1) {
-        stepResult9 = quarterData[index].value.filter((m) => m.name.toLowerCase().includes(quarter.toLowerCase()));
+        stepResult9 = quarterData[index].value.filter((q) => q.name.toLowerCase().includes(quarter.toLowerCase()));
       }
     }
     const n = 10;
@@ -360,16 +386,16 @@ const OrderDrug = () => {
       <div className="row">
         <div className="col-md-12 pt-5">
           <div className="nav flex-column nav-pills" id="pills-tab" role="tablist" aria-orientation="vertical">
-            <button className={`nav-link ${page === 1 ? '' : 'd-none'}`} id="pills-1-tab" data-toggle="pill" data-target="#pills-1" type="button" role="tab" aria-controls="pills-1" aria-selected="false">Step 1 / 10</button>
-            <button className={`nav-link ${page === 2 ? '' : 'd-none'}`} id="pills-2-tab" data-toggle="pill" data-target="#pills-2" type="button" role="tab" aria-controls="pills-2" aria-selected="false">Step 2 / 10</button>
-            <button className={`nav-link ${page === 3 ? '' : 'd-none'}`} id="pills-3-tab" data-toggle="pill" data-target="#pills-3" type="button" role="tab" aria-controls="pills-3" aria-selected="false">Step 3 / 10</button>
-            <button className={`nav-link ${page === 4 ? '' : 'd-none'}`} id="pills-4-tab" data-toggle="pill" data-target="#pills-4" type="button" role="tab" aria-controls="pills-4" aria-selected="false">Step 4 / 10</button>
-            <button className={`nav-link ${page === 5 ? '' : 'd-none'}`} id="pills-5-tab" data-toggle="pill" data-target="#pills-5" type="button" role="tab" aria-controls="pills-5" aria-selected="false">Step 5 / 10</button>
-            <button className={`nav-link ${page === 6 ? '' : 'd-none'}`} id="pills-6-tab" data-toggle="pill" data-target="#pills-6" type="button" role="tab" aria-controls="pills-6" aria-selected="false">Step 6 / 10</button>
-            <button className={`nav-link ${page === 7 ? '' : 'd-none'}`} id="pills-7-tab" data-toggle="pill" data-target="#pills-7" type="button" role="tab" aria-controls="pills-7" aria-selected="false">Step 7 / 10</button>
-            <button className={`nav-link ${page === 8 ? '' : 'd-none'}`} id="pills-8-tab" data-toggle="pill" data-target="#pills-8" type="button" role="tab" aria-controls="pills-8" aria-selected="false">Step 8 / 10</button>
-            <button className={`nav-link ${page === 9 ? '' : 'd-none'}`} id="pills-9-tab" data-toggle="pill" data-target="#pills-9" type="button" role="tab" aria-controls="pills-9" aria-selected="false">Step 9 / 10</button>
-            <button className={`nav-link ${page === 10 ? '' : 'd-none'}`} id="pills-10-tab" data-toggle="pill" data-target="#pills-10" type="button" role="tab" aria-controls="pills-10" aria-selected="false">Step 10 / 10</button>
+            <button type="button" className={`nav-link ${page === 1 ? '' : 'd-none'}`} id="pills-1-tab" data-toggle="pill" data-target="#pills-1" type="button" role="tab" aria-controls="pills-1" aria-selected="false">Step 1 / 10</button>
+            <button type="button" className={`nav-link ${page === 2 ? '' : 'd-none'}`} id="pills-2-tab" data-toggle="pill" data-target="#pills-2" type="button" role="tab" aria-controls="pills-2" aria-selected="false">Step 2 / 10</button>
+            <button type="button" className={`nav-link ${page === 3 ? '' : 'd-none'}`} id="pills-3-tab" data-toggle="pill" data-target="#pills-3" type="button" role="tab" aria-controls="pills-3" aria-selected="false">Step 3 / 10</button>
+            <button type="button" className={`nav-link ${page === 4 ? '' : 'd-none'}`} id="pills-4-tab" data-toggle="pill" data-target="#pills-4" type="button" role="tab" aria-controls="pills-4" aria-selected="false">Step 4 / 10</button>
+            <button type="button" className={`nav-link ${page === 5 ? '' : 'd-none'}`} id="pills-5-tab" data-toggle="pill" data-target="#pills-5" type="button" role="tab" aria-controls="pills-5" aria-selected="false">Step 5 / 10</button>
+            <button type="button" className={`nav-link ${page === 6 ? '' : 'd-none'}`} id="pills-6-tab" data-toggle="pill" data-target="#pills-6" type="button" role="tab" aria-controls="pills-6" aria-selected="false">Step 6 / 10</button>
+            <button type="button" className={`nav-link ${page === 7 ? '' : 'd-none'}`} id="pills-7-tab" data-toggle="pill" data-target="#pills-7" type="button" role="tab" aria-controls="pills-7" aria-selected="false">Step 7 / 10</button>
+            <button type="button" className={`nav-link ${page === 8 ? '' : 'd-none'}`} id="pills-8-tab" data-toggle="pill" data-target="#pills-8" type="button" role="tab" aria-controls="pills-8" aria-selected="false">Step 8 / 10</button>
+            <button type="button" className={`nav-link ${page === 9 ? '' : 'd-none'}`} id="pills-9-tab" data-toggle="pill" data-target="#pills-9" type="button" role="tab" aria-controls="pills-9" aria-selected="false">Step 9 / 10</button>
+            <button type="button" className={`nav-link ${page === 10 ? '' : 'd-none'}`} id="pills-10-tab" data-toggle="pill" data-target="#pills-10" type="button" role="tab" aria-controls="pills-10" aria-selected="false">Step 10 / 10</button>
           </div>
         </div>
         <div className="col-md-12 py-5">

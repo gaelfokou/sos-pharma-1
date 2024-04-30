@@ -36,7 +36,7 @@ const Step2 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
             <table className="table table-striped table-hover table-2">
               <tbody>
                 {formData.stepResult2.map((drug, index) => (
-                  <tr key={index} data-value={drug.name}>
+                  <tr key={index} data-value={`${drug.name} : ${drug.price} XAF`}>
                     <td>{`${drug.name} : ${drug.price} XAF`}</td>
                   </tr>
                 ))}
@@ -44,17 +44,17 @@ const Step2 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
             </table>
           </div>)}
           <div className="form-group">
-            <button type="submit" className="btn btn-success rounded-lg">Suivant</button>
+            <button type="submit" name="submit" className="btn btn-success rounded-lg rounded-after">Suivant</button>
           </div>
         </form>
       </div>
       <div className="card-footer text-right">
         <div className="d-flex justify-content-end">
           {page > 1 && (
-            <button className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
+            <button type="button" className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
           )}
           {page < 10 && (
-            <button className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
+            <button type="button" className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
           )}
         </div>
       </div>

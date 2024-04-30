@@ -21,7 +21,7 @@ const App = () => {
       </div>
       <div className="row">
         <div className="col-md-12 py-5">
-          <a className="btn btn-outline-success rounded-lg btn-lg btn-block" href="/order-drug">Commandez vos médicaments ici</a>
+          <a className="btn btn-outline-success rounded-lg rounded-after btn-lg btn-block" href="/order-drug">Commandez vos médicaments ici</a>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ const Header = () => {
             <a className="navbar-brand" href="/">
                 <img src={logo.src} width="60" alt="" />
             </a>
-            <a className="btn btn-success rounded-lg" href="#">653 080 072</a>
+            <a className="btn btn-success rounded-lg rounded-after" href="#">653 080 072</a>
         </nav>
     </header>
   );
