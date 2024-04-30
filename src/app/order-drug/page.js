@@ -325,6 +325,7 @@ const OrderDrug = () => {
   };
 
   const handleSearchDrug = (drug) => {
+    drug = drug.split(':')[0];
     drug = drug.trim();
     var stepResult2 = [...formData.stepResult2];
     if (drug === "") {
