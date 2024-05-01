@@ -60,7 +60,7 @@ const OrderDrug = () => {
   useEffect(() => {
     require('bootstrap/dist/js/bootstrap.bundle.min.js');
 
-    const button = $('#pills-tab button[data-target="#pills-'+page+'"]');
+    const button = $('#v-pills-tab button[data-target="#v-pills-'+page+'"]');
     button.tab('show');
     button.on('click', handleEvent);
     const inputs = document.querySelectorAll('.form-group-'+page);
@@ -93,7 +93,7 @@ const OrderDrug = () => {
   const handleEvent = (event) => {
     event.preventDefault();
 
-    const target = parseInt(event.target.getAttribute('data-target').replace('#pills-',''));
+    const target = parseInt(event.target.getAttribute('data-target').replace('#v-pills-',''));
     setPage(target);
   };
 
@@ -103,7 +103,7 @@ const OrderDrug = () => {
     const input = event.target.parentNode.querySelector('input[type="radio"]');
     if (input !== null) {
       input.checked = true;
-      const button = document.querySelector('#pills-tab button[data-target="#pills-'+page+'"]');
+      const button = document.querySelector('#v-pills-tab button[data-target="#v-pills-'+page+'"]');
       const inputs = document.querySelectorAll('.form-group-'+page);
       if (button.classList.contains('invalid')) {
         button.classList.remove('invalid');
@@ -193,7 +193,7 @@ const OrderDrug = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const button = document.querySelector('#pills-tab button[data-target="#pills-'+page+'"]');
+    const button = document.querySelector('#v-pills-tab button[data-target="#v-pills-'+page+'"]');
     const inputs = document.querySelectorAll('.form-group-'+page);
     const form = event.target;
     if (form.checkValidity() === false) {
@@ -254,7 +254,7 @@ const OrderDrug = () => {
     event.preventDefault();
 
     const { form, name, value } = event.target;
-    const button = document.querySelector('#pills-tab button[data-target="#pills-'+page+'"]');
+    const button = document.querySelector('#v-pills-tab button[data-target="#v-pills-'+page+'"]');
     const inputs = document.querySelectorAll('.form-group-'+page);
     if (form.checkValidity() === false) {
       if (!button.classList.contains('invalid')) {
@@ -385,22 +385,22 @@ const OrderDrug = () => {
       </div>
       <div className="row">
         <div className="col-md-12 pt-5">
-          <div className="nav flex-column nav-pills" id="pills-tab" role="tablist" aria-orientation="vertical">
-            <button type="button" className={`nav-link ${page === 0 ? '' : 'd-none'}`} id="pills-1-tab" data-toggle="pill" data-target="#pills-1" role="tab" aria-controls="pills-1" aria-selected="false">Étape 1 / 9</button>
-            <button type="button" className={`nav-link ${page === 2 ? '' : 'd-none'}`} id="pills-2-tab" data-toggle="pill" data-target="#pills-2" role="tab" aria-controls="pills-2" aria-selected="false">Étape 1 / 9</button>
-            <button type="button" className={`nav-link ${page === 3 ? '' : 'd-none'}`} id="pills-3-tab" data-toggle="pill" data-target="#pills-3" role="tab" aria-controls="pills-3" aria-selected="false">Étape 2 / 9</button>
-            <button type="button" className={`nav-link ${page === 4 ? '' : 'd-none'}`} id="pills-4-tab" data-toggle="pill" data-target="#pills-4" role="tab" aria-controls="pills-4" aria-selected="false">Étape 3 / 9</button>
-            <button type="button" className={`nav-link ${page === 5 ? '' : 'd-none'}`} id="pills-5-tab" data-toggle="pill" data-target="#pills-5" role="tab" aria-controls="pills-5" aria-selected="false">Étape 4 / 9</button>
-            <button type="button" className={`nav-link ${page === 6 ? '' : 'd-none'}`} id="pills-6-tab" data-toggle="pill" data-target="#pills-6" role="tab" aria-controls="pills-6" aria-selected="false">Étape 5 / 9</button>
-            <button type="button" className={`nav-link ${page === 7 ? '' : 'd-none'}`} id="pills-7-tab" data-toggle="pill" data-target="#pills-7" role="tab" aria-controls="pills-7" aria-selected="false">Étape 6 / 9</button>
-            <button type="button" className={`nav-link ${page === 8 ? '' : 'd-none'}`} id="pills-8-tab" data-toggle="pill" data-target="#pills-8" role="tab" aria-controls="pills-8" aria-selected="false">Étape 7 / 9</button>
-            <button type="button" className={`nav-link ${page === 9 ? '' : 'd-none'}`} id="pills-9-tab" data-toggle="pill" data-target="#pills-9" role="tab" aria-controls="pills-9" aria-selected="false">Étape 8 / 9</button>
-            <button type="button" className={`nav-link ${page === 10 ? '' : 'd-none'}`} id="pills-10-tab" data-toggle="pill" data-target="#pills-10" role="tab" aria-controls="pills-10" aria-selected="false">Étape 9 / 9</button>
+          <div className="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <button type="button" className={`nav-link active ${page === 0 ? '' : 'd-none'}`} id="v-pills-1-tab" data-toggle="pill" data-target="#v-pills-1" role="tab" aria-controls="v-pills-1" aria-selected="false">Étape 1 / 9</button>
+            <button type="button" className={`nav-link ${page === 2 ? '' : 'd-none'}`} id="v-pills-2-tab" data-toggle="pill" data-target="#v-pills-2" role="tab" aria-controls="v-pills-2" aria-selected="false">Étape 1 / 9</button>
+            <button type="button" className={`nav-link ${page === 3 ? '' : 'd-none'}`} id="v-pills-3-tab" data-toggle="pill" data-target="#v-pills-3" role="tab" aria-controls="v-pills-3" aria-selected="false">Étape 2 / 9</button>
+            <button type="button" className={`nav-link ${page === 4 ? '' : 'd-none'}`} id="v-pills-4-tab" data-toggle="pill" data-target="#v-pills-4" role="tab" aria-controls="v-pills-4" aria-selected="false">Étape 3 / 9</button>
+            <button type="button" className={`nav-link ${page === 5 ? '' : 'd-none'}`} id="v-pills-5-tab" data-toggle="pill" data-target="#v-pills-5" role="tab" aria-controls="v-pills-5" aria-selected="false">Étape 4 / 9</button>
+            <button type="button" className={`nav-link ${page === 6 ? '' : 'd-none'}`} id="v-pills-6-tab" data-toggle="pill" data-target="#v-pills-6" role="tab" aria-controls="v-pills-6" aria-selected="false">Étape 5 / 9</button>
+            <button type="button" className={`nav-link ${page === 7 ? '' : 'd-none'}`} id="v-pills-7-tab" data-toggle="pill" data-target="#v-pills-7" role="tab" aria-controls="v-pills-7" aria-selected="false">Étape 6 / 9</button>
+            <button type="button" className={`nav-link ${page === 8 ? '' : 'd-none'}`} id="v-pills-8-tab" data-toggle="pill" data-target="#v-pills-8" role="tab" aria-controls="v-pills-8" aria-selected="false">Étape 7 / 9</button>
+            <button type="button" className={`nav-link ${page === 9 ? '' : 'd-none'}`} id="v-pills-9-tab" data-toggle="pill" data-target="#v-pills-9" role="tab" aria-controls="v-pills-9" aria-selected="false">Étape 8 / 9</button>
+            <button type="button" className={`nav-link ${page === 10 ? '' : 'd-none'}`} id="v-pills-10-tab" data-toggle="pill" data-target="#v-pills-10" role="tab" aria-controls="v-pills-10" aria-selected="false">Étape 9 / 9</button>
           </div>
         </div>
         <div className={`col-md-12 ${page === 1 ? 'pb-5' : 'py-5'}`}>
-          <div className="tab-content" id="pills-tabContent">
-            <div className="tab-pane slide" id="pills-1" role="tabpanel" aria-labelledby="pills-1-tab">
+          <div className="tab-content" id="v-pills-tabContent">
+            <div className="tab-pane slide show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-1-tab">
               <Step1
                 page={page}
                 handleNext={handleNext}
@@ -412,7 +412,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-2" role="tabpanel" aria-labelledby="pills-2-tab">
+            <div className="tab-pane slide" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-2-tab">
               <Step2
                 page={page}
                 handleNext={handleNext}
@@ -424,7 +424,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-3" role="tabpanel" aria-labelledby="pills-3-tab">
+            <div className="tab-pane slide" id="v-pills-3" role="tabpanel" aria-labelledby="v-pills-3-tab">
               <Step3
                 page={page}
                 handleNext={handleNext}
@@ -436,7 +436,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-4" role="tabpanel" aria-labelledby="pills-4-tab">
+            <div className="tab-pane slide" id="v-pills-4" role="tabpanel" aria-labelledby="v-pills-4-tab">
               <Step4
                 page={page}
                 handleNext={handleNext}
@@ -448,7 +448,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-5" role="tabpanel" aria-labelledby="pills-5-tab">
+            <div className="tab-pane slide" id="v-pills-5" role="tabpanel" aria-labelledby="v-pills-5-tab">
               <Step5
                 page={page}
                 handleNext={handleNext}
@@ -460,7 +460,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-6" role="tabpanel" aria-labelledby="pills-6-tab">
+            <div className="tab-pane slide" id="v-pills-6" role="tabpanel" aria-labelledby="v-pills-6-tab">
               <Step6
                 page={page}
                 handleNext={handleNext}
@@ -472,7 +472,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-7" role="tabpanel" aria-labelledby="pills-7-tab">
+            <div className="tab-pane slide" id="v-pills-7" role="tabpanel" aria-labelledby="v-pills-7-tab">
               <Step7
                 page={page}
                 handleNext={handleNext}
@@ -484,7 +484,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-8" role="tabpanel" aria-labelledby="pills-8-tab">
+            <div className="tab-pane slide" id="v-pills-8" role="tabpanel" aria-labelledby="v-pills-8-tab">
               <Step8
                 page={page}
                 handleNext={handleNext}
@@ -496,7 +496,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-9" role="tabpanel" aria-labelledby="pills-9-tab">
+            <div className="tab-pane slide" id="v-pills-9" role="tabpanel" aria-labelledby="v-pills-9-tab">
               <Step9
                 page={page}
                 handleNext={handleNext}
@@ -508,7 +508,7 @@ const OrderDrug = () => {
                 formData={formData}
               />
             </div>
-            <div className="tab-pane slide" id="pills-10" role="tabpanel" aria-labelledby="pills-10-tab">
+            <div className="tab-pane slide" id="v-pills-10" role="tabpanel" aria-labelledby="v-pills-10-tab">
               <Step10
                 page={page}
                 handleNext={handleNext}

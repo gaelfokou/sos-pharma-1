@@ -38,13 +38,37 @@ const Step10 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, ha
                     </tr>
                   ))}
                 </tbody>
-                <tfoot>
+                <thead>
                   <tr>
                     <th scope="row"></th>
                     <td colSpan="4">Total</td>
                     <td>{`${formData.stepValue2.reduce((n, { price }, index) => n + price * formData.stepValue3[index], 0)} XAF`}</td>
                   </tr>
-                </tfoot>
+                </thead>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col" colSpan="5" className="text-left">Informations du client</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"></th>
+                    <td colSpan="5" className="text-left">Nom : {`${formData.step6}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td colSpan="5" className="text-left">Numéro de téléphone : {`${formData.step7}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td colSpan="5" className="text-left">Ville : {`${formData.step8}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"></th>
+                    <td colSpan="5" className="text-left">Quartier : {`${formData.step9}`}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>

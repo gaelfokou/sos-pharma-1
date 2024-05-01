@@ -162,9 +162,6 @@ p {
 .table-bordered thead td, .table-bordered thead th {
   border-bottom-width: 0 !important;
 }
-.table-bordered tfoot td, .table-bordered tfoot th {
-  font-weight: bold !important;
-}
 .btn-outline-success {
   margin-right: .1rem !important;
 }
