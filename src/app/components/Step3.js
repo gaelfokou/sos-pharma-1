@@ -9,35 +9,55 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Étape 2 : Quelle quantité de ce médicament souhaitez-vous commander ?</h6>
+        <h6 className="card-title">Étape 3 : Ce médicament est-il une prescription médicale ?</h6>
       </div>
       <div className="card-body px-2 py-2">
         <form id="form-3" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
           <div className="form-group form-group-3">
-            <label className="sr-only" htmlFor="inlineFormInputGroup">Tapez votre réponse ici...</label>
+            <label className="sr-only" htmlFor="inlineFormInputGroup31">Tapez votre réponse ici...</label>
             <div className="input-group">
-              <select
-                name="step3"
+              <input
+                type="text"
                 className="form-control"
-                id="inlineFormInputGroup"
-                value={formData.step3}
-                onChange={handleChange}
-                required
-              >
-                <option value="" disabled>Sélectionnez votre réponse ici...</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+                placeholder="Oui"
+                readOnly
+              />
               <div className="input-group-append">
-                <div className="input-group-text">@</div>
+                <div className="input-group-text">
+                  <input
+                    type="radio"
+                    name="step3"
+                    id="inlineFormInputGroup31"
+                    value="Oui"
+                    checked={formData.step3 === "Oui"}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="form-group form-group-3">
+            <label className="sr-only" htmlFor="inlineFormInputGroup32">Tapez votre réponse ici...</label>
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Non"
+                readOnly
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">
+                  <input
+                    type="radio"
+                    name="step3"
+                    id="inlineFormInputGroup32"
+                    value="Non"
+                    checked={formData.step3 === "Non"}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -51,7 +71,7 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           {page > 1 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
           )}
-          {page < 10 && (
+          {page < 9 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
           )}
         </div>

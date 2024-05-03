@@ -9,18 +9,18 @@ const Step8 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Étape 7 : Dans quelle ville vous trouvez-vous ?</h6>
+        <h6 className="card-title">Étape 8 : Dans quel quartier êtes-vous ?</h6>
       </div>
       <div className="card-body px-2 py-2">
         <form id="form-8" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
           <div className="form-group form-group-8">
-            <label className="sr-only" htmlFor="inlineFormInputGroup">Tapez votre réponse ici...</label>
+            <label className="sr-only" htmlFor="inlineFormInputGroup8">Tapez votre réponse ici...</label>
             <div className="input-group">
               <input
                 type="text"
                 name="step8"
                 className="form-control"
-                id="inlineFormInputGroup"
+                id="inlineFormInputGroup8"
                 placeholder="Tapez votre réponse ici..."
                 value={formData.step8}
                 onChange={handleChange}
@@ -53,7 +53,7 @@ const Step8 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           {page > 1 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
           )}
-          {page < 10 && (
+          {page < 9 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
           )}
         </div>

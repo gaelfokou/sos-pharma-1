@@ -9,10 +9,10 @@ const Step4 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Étape 3 : Ce médicament est-il une prescription médicale ?</h6>
+        <h6 className="card-title">Étape 4 : Souhaitez-vous commander un autre médicament ?</h6>
       </div>
       <div className="card-body px-2 py-2">
-        <form id="form-4" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
+      <form id="form-4" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
           <div className="form-group form-group-4">
             <label className="sr-only" htmlFor="inlineFormInputGroup41">Tapez votre réponse ici...</label>
             <div className="input-group">
@@ -71,7 +71,7 @@ const Step4 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           {page > 1 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
           )}
-          {page < 10 && (
+          {page < 9 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
           )}
         </div>
