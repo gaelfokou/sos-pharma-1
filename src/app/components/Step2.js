@@ -9,38 +9,118 @@ const Step2 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Étape 2 : Quelle quantité de ce médicament souhaitez-vous commander ?</h6>
+        <h6 className="card-title">Étape 2</h6>
       </div>
       <div className="card-body px-2 py-2">
         <form id="form-2" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="font-weight-bold text-success mx-per-10">Quel est votre nom ?</label>
+          </div>
           <div className="form-group form-group-2">
-            <label className="sr-only" htmlFor="inlineFormInputGroup2">Tapez votre réponse ici...</label>
+            <label className="sr-only" htmlFor="inlineFormInputGroup21">Tapez votre réponse ici...</label>
             <div className="input-group">
-              <select
-                name="step2"
+              <input
+                type="text"
+                name="step5"
                 className="form-control"
-                id="inlineFormInputGroup2"
-                value={formData.step2}
+                id="inlineFormInputGroup21"
+                placeholder="Tapez votre réponse ici..."
+                value={formData.step5}
                 onChange={handleChange}
                 required
-              >
-                <option value="" disabled>Sélectionnez votre réponse ici...</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-              </select>
+              />
               <div className="input-group-append">
                 <div className="input-group-text">@</div>
               </div>
             </div>
           </div>
+          <div className="form-group">
+            <label className="font-weight-bold text-success mx-per-10">Quel est votre numéro de téléphone ?</label>
+          </div>
+          <div className="form-group form-group-2">
+            <label className="sr-only" htmlFor="inlineFormInputGroup22">Tapez votre réponse ici...</label>
+            <div className="input-group">
+              <input
+                type="number"
+                name="step6"
+                className="form-control"
+                id="inlineFormInputGroup22"
+                placeholder="Tapez votre réponse ici..."
+                value={formData.step6}
+                onChange={handleChange}
+                required
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">@</div>
+              </div>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="font-weight-bold text-success mx-per-10">Dans quelle ville vous trouvez-vous ?</label>
+          </div>
+          <div className="form-group form-group-2">
+            <label className="sr-only" htmlFor="inlineFormInputGroup23">Tapez votre réponse ici...</label>
+            <div className="input-group">
+              <input
+                type="text"
+                name="step7"
+                className="form-control"
+                id="inlineFormInputGroup23"
+                placeholder="Tapez votre réponse ici..."
+                value={formData.step7}
+                onChange={handleChange}
+                onFocus={handleFocus}
+                required
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">@</div>
+              </div>
+            </div>
+          </div>
+          {formData.stepResult7.length > 0 && (<div className="form-group scroll-table">
+            <table className="table table-striped table-hover table-2">
+              <tbody>
+                {formData.stepResult7.map((drug, index) => (
+                  <tr key={index} data-name="step7" data-value={drug.name} data-result="stepResult7">
+                    <td>{`${drug.name}`}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>)}
+          <div className="form-group">
+            <label className="font-weight-bold text-success mx-per-10">Dans quel quartier êtes-vous ?</label>
+          </div>
+          <div className="form-group form-group-2">
+            <label className="sr-only" htmlFor="inlineFormInputGroup24">Tapez votre réponse ici...</label>
+            <div className="input-group">
+              <input
+                type="text"
+                name="step8"
+                className="form-control"
+                id="inlineFormInputGroup24"
+                placeholder="Tapez votre réponse ici..."
+                value={formData.step8}
+                onChange={handleChange}
+                onFocus={handleFocus}
+                required
+              />
+              <div className="input-group-append">
+                <div className="input-group-text">@</div>
+              </div>
+            </div>
+          </div>
+          {formData.stepResult8.length > 0 && (<div className="form-group scroll-table">
+            <table className="table table-striped table-hover table-2">
+              <tbody>
+                {formData.stepResult8.map((drug, index) => (
+                  <tr key={index} data-name="step8" data-value={drug.name} data-result="stepResult8">
+                    <td>{`${drug.name}`}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>)}
           <div className="form-group">
             <button type="submit" name="submit" className="btn btn-success rounded-lg rounded-after">Suivant</button>
           </div>
@@ -51,7 +131,7 @@ const Step2 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           {page > 1 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
           )}
-          {page < 9 && (
+          {page < 3 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
           )}
         </div>

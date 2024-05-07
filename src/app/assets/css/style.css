@@ -172,8 +172,16 @@ p {
 }
 .btn-outline-success.focus, .btn-outline-success:focus {
   color: #1e7e34 !important;
-  box-shadow: 0 0 0 .1rem rgba(72, 180, 97, .5);
+  box-shadow: 0 0 0 .1rem rgba(72, 180, 97, .5) !important;
 }
 .btn-success.focus, .btn-success:focus {
-  box-shadow: 0 0 0 .1rem rgba(72, 180, 97, .5);
+  box-shadow: 0 0 0 .1rem rgba(72, 180, 97, .5) !important;
+}
+label {
+  font-size: .9rem !important;
+  margin-bottom: 0 !important;
+}
+.mx-per-10 {
+  margin-left: 10% !important;
+  margin-right: 10% !important;
 }

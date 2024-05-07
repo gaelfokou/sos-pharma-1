@@ -9,60 +9,87 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
   return (
     <div className="card text-center">
       <div className="card-header">
-        <h6 className="card-title">Étape 3 : Ce médicament est-il une prescription médicale ?</h6>
+        <h6 className="card-title">Étape 3 : Récapitulatif de la commande</h6>
       </div>
       <div className="card-body px-2 py-2">
-        <form id="form-3" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <div className="form-group form-group-3">
-            <label className="sr-only" htmlFor="inlineFormInputGroup31">Tapez votre réponse ici...</label>
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Oui"
-                readOnly
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <input
-                    type="radio"
-                    name="step3"
-                    id="inlineFormInputGroup31"
-                    value="Oui"
-                    checked={formData.step3 === "Oui"}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="form-group form-group-3">
-            <label className="sr-only" htmlFor="inlineFormInputGroup32">Tapez votre réponse ici...</label>
-            <div className="input-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Non"
-                readOnly
-              />
-              <div className="input-group-append">
-                <div className="input-group-text">
-                  <input
-                    type="radio"
-                    name="step3"
-                    id="inlineFormInputGroup32"
-                    value="Non"
-                    checked={formData.step3 === "Non"}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
+        <form id="form-6" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
+          <div className="form-group">
+            <div className="table-responsive">
+              <table className="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Médicament</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {formData.stepValue1.map((drug, index) => (
+                    <>
+                      <tr key={index}>
+                        <th scope="row">{`${index + 1}`}</th>
+                        <td>{`${drug.name}`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Prescription</th>
+                        <td>{`${formData.stepValue3[index]}`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Prix</th>
+                        <td>{`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Qté</th>
+                        <td>{`${formData.stepValue2[index]}`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Sous-Total</th>
+                        <td>{`${new Intl.NumberFormat('de-DE').format(drug.price * formData.stepValue2[index])} CFA`}</td>
+                      </tr>
+                    </>
+                  ))}
+                </tbody>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Total de la commande</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td>{`${new Intl.NumberFormat('de-DE').format(formData.stepValue1.reduce((n, { price }, index) => n + price * formData.stepValue2[index], 0))} CFA`}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Informations du client</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Nom</th>
+                    <td>{`${formData.step5}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Numéro de téléphone</th>
+                    <td><a className="text-success" href={`tel:${formData.step6}`}>{`${formData.step6}`}</a></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Ville</th>
+                    <td>{`${formData.step7}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Quartier</th>
+                    <td>{`${formData.step8}`}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
           <div className="form-group">
-            <button type="submit" name="submit" className="btn btn-success rounded-lg rounded-after">Suivant</button>
+            <button type="submit" name="cancel" className="btn btn-outline-success rounded-lg">Annulez</button>
+            <button type="submit" name="submit" className="btn btn-success rounded-lg">Payez</button>
           </div>
         </form>
       </div>
@@ -71,7 +98,7 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           {page > 1 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handlePrevious}>{`<`}</button>
           )}
-          {page < 9 && (
+          {page < 3 && (
             <button type="button" className="btn btn-success rounded-lg" onClick={handleClick}>{`>`}</button>
           )}
         </div>
