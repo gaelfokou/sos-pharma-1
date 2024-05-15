@@ -66,7 +66,7 @@ const OrderList = () => {
             <div className="card-body px-2 py-2">
               {orderData.length > 0 ? (<ul className="list-group list-group-flush">
                 {orderData.map((order, index) => (
-                  <li key={index} className="list-group-item list-group-item-action">{`${index+1}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')} - ${order.orderdrugs.reduce((n, { price, quantity }, index) => n + price * quantity, 0)} CFA`}</li>
+                  <li key={index} className="list-group-item list-group-item-action">{`${index+1}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')} - ${order.orderdrugs.reduce((n, { price, quantity }, index) => n + price * quantity, 0)} CFA - ${order.payment.reason !== null ? order.payment.reason : order.payment.status}`}</li>
                 ))}
               </ul>) : (<ul className="list-group list-group-flush">
                 <li className="list-group-item list-group-item-action">Pas de commandes disponibles...</li>

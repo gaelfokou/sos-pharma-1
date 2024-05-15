@@ -159,8 +159,27 @@ p {
 .table {
   margin-bottom: 0 !important;
 }
-.table .active {
+.table tr {
+  color: #212529;
+  border-color: #dee2e6 !important;
+}
+.table tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.table tr.active {
   color: #1e7e34 !important;
+  background: transparent !important;
+  border-color: #dee2e6 !important;
+}
+.table tr.active:nth-of-type(odd) {
+  color: #1e7e34 !important;
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.table tr:focus, .table tr:hover {
+  background-color: rgba(0, 0, 0, .05) !important;
+  border-color: #dee2e6 !important;
 }
 .table-bordered thead td, .table-bordered thead th {
   border-bottom-width: 0 !important;
@@ -188,11 +207,25 @@ label {
   margin-left: 10% !important;
   margin-right: 10% !important;
 }
-.list-group-item.active {
-  color: rgba(0, 0, 0, .87) !important;
-  background-color: rgba(0, 0, 0, .05) !important;
+.list-group-item {
+  color: #212529;
   border-color: #dee2e6 !important;
 }
 .list-group-item:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, .05);
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.list-group-item.active {
+  color: #1e7e34 !important;
+  background: transparent !important;
+  border-color: #dee2e6 !important;
+}
+.list-group-item.active:nth-of-type(odd) {
+  color: #1e7e34 !important;
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.list-group-item:focus, .list-group-item:hover {
+  background-color: rgba(0, 0, 0, .05) !important;
+  border-color: #dee2e6 !important;
 }
