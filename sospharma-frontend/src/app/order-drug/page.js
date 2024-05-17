@@ -41,7 +41,11 @@ const OrderDrug = () => {
 
     dispatch(tokenCreate((data) => {
       dispatch(tokenCheck(data, orderRetrieve, orderData));
-    }));
+
+      return {
+        type: '',
+      };
+  }));
 
     const button = $('#v-pills-tab button[data-target="#v-pills-'+page+'"]');
     button.tab('show');
@@ -183,6 +187,10 @@ const OrderDrug = () => {
         dispatch(setFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" }));
         toastAlert.toast('show');
         push('/order-list');
+
+        return {
+          type: '',
+        };
       }));
     } else {
       var validForm = form.checkValidity();
@@ -469,7 +477,7 @@ const OrderDrug = () => {
       <div className="row">
         <div className="col">
           <div className="position-fixed bottom-0 right-0 p-3" style={{ zIndex: 5, right: 0, bottom: 0 }}>
-            <div id="liveToast" className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3500">
+            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3500">
               <div className="toast-header">
                 <img src={logo.src} className="rounded mr-2" width="30" alt="" />
                 <strong className="mr-auto">SOS Pharma</strong>

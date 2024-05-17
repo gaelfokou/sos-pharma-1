@@ -18,9 +18,8 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
               <table className="table table-striped table-bordered">
                 <thead>
                   <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Détails</th>
-                    <th scope="col">Coût (CFA)</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Médicament</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -28,17 +27,61 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                     <>
                       <tr key={index}>
                         <th scope="row">{`${index + 1}`}</th>
-                        <td>{`${drug.name}`} - {`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`} * {`${formData.stepValue2[index]}`} qté(s)</td>
+                        <td>{`${drug.name}`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Prescription</th>
+                        <td>{`${formData.stepValue3[index]}`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Prix</th>
+                        <td>{`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Qté</th>
+                        <td>{`${formData.stepValue2[index]}`}</td>
+                      </tr>
+                      <tr key={index}>
+                        <th scope="row">Sous-Total</th>
                         <td>{`${new Intl.NumberFormat('de-DE').format(drug.price * formData.stepValue2[index])} CFA`}</td>
                       </tr>
                     </>
                   ))}
                 </tbody>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Total de la commande</th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Total de la commande</th>
+                    <th scope="row">Total</th>
                     <td>{`${new Intl.NumberFormat('de-DE').format(formData.stepValue1.reduce((n, { price }, index) => n + price * formData.stepValue2[index], 0))} CFA`}</td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Informations du client</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Nom</th>
+                    <td>{`${formData.step5}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Numéro de téléphone</th>
+                    <td><a className="text-success" href={`tel:${formData.step6}`}>{`${formData.step6}`}</a></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Ville</th>
+                    <td>{`${formData.step7}`}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Quartier</th>
+                    <td>{`${formData.step8}`}</td>
                   </tr>
                 </tbody>
               </table>

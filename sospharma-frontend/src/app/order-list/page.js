@@ -8,21 +8,22 @@ import intlTelInput from 'intl-tel-input';
 import moment from 'moment';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormData, tokenCreate, tokenCheck, orderCreate, orderRetrieve } from '../redux/Actions';
+import { tokenCreate, tokenCheck, orderRetrieve } from '../redux/Actions';
 
 const OrderList = () => {
   const dispatch = useDispatch();
-  const { token, formData, drugData, cityData, quarterData, orderData } = useSelector(state => state.order);
-
-  const [page, setPage] = useState(1);
-  const [phoneInput, setPhoneInput] = useState(null);
+  const { orderData } = useSelector(state => state.order);
 
   useEffect(() => {
     require('bootstrap/dist/js/bootstrap.bundle.min.js');
 
     dispatch(tokenCreate((data) => {
       dispatch(tokenCheck(data, orderRetrieve, orderData));
-    }));
+
+      return {
+        type: '',
+      };
+  }));
 
     const buttons = document.querySelectorAll('.list-group-item');
     buttons.forEach(button => {
@@ -66,7 +67,7 @@ const OrderList = () => {
             <div className="card-body px-2 py-2">
               {orderData.length > 0 ? (<ul className="list-group list-group-flush">
                 {orderData.map((order, index) => (
-                  <li key={index} className="list-group-item list-group-item-action">{`${index+1}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')} - ${order.orderdrugs.reduce((n, { price, quantity }, index) => n + price * quantity, 0)} CFA - ${order.payment.reason !== null ? order.payment.reason : order.payment.status}`}</li>
+                  <li key={index} className="list-group-item list-group-item-action">{`${index+1}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')} - ${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? order.payment.reason : order.payment.status}`}</li>
                 ))}
               </ul>) : (<ul className="list-group list-group-flush">
                 <li className="list-group-item list-group-item-action">Pas de commandes disponibles...</li>

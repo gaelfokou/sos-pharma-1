@@ -4,8 +4,7 @@ import 'intl-tel-input/build/css/intlTelInput.css';
 import './assets/css/style.css';
 
 import ReducerLayout from "./redux/ReducerLayout";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import LayoutWrapper from "./components/LayoutWrapper";
 
 export const metadata = {
   title: "Create Next App",
@@ -17,15 +16,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ReducerLayout>
-          <div className="d-flex flex-column justify-content-between vh-100">
-            <div className="d-flex flex-column">
-              <Header />
-              <div className="container">
-                {children}
-              </div>
-            </div>
-            <Footer />
-          </div>
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
         </ReducerLayout>
       </body>
     </html>

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import logo from '../assets/images/logo-sos-pharma.png';

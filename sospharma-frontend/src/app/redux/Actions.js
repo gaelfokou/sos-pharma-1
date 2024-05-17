@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import moment from 'moment';
+import Cookies from 'js-cookie';
 
 import { constants } from '../configs/Constants';
 import { FETCH_FORM_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
@@ -38,7 +39,7 @@ export const tokenCreate = (callback=null) => {
         dispatch(fetchDataFailure(response.data));
       }
     } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+      dispatch(fetchDataFailure(error.response.data));
     }
   };
 };
@@ -98,7 +99,7 @@ export const orderCreate = (token, data, callback) => {
         dispatch(fetchDataFailure(response.data));
       }
     } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+      dispatch(fetchDataFailure(error.response.data));
     }
   };
 };
@@ -122,9 +123,46 @@ export const orderRetrieve = (token, data) => {
             dispatch(fetchDataFailure(response.data));
           }
         } catch (error) {
-          dispatch(fetchDataFailure(error.message));
+          dispatch(fetchDataFailure(error.response.data));
         }
       }
     });
+  };
+};
+
+export const useLogin = (email, password, callback) => {
+  return async (dispatch) => {
+    dispatch(fetchDataRequest());
+    try {
+      const params = {
+        email,
+        password,
+      };
+      const response = await requests.axios(`${constants.baseUrl}/api/auth/token/`, 'POST', {}, params);
+      if (response.status === 200) {
+        await Cookies.set('token', response.data);
+        dispatch(fetchDataSuccess());
+        dispatch(callback(true));
+      } else {
+        dispatch(fetchDataFailure(response.data));
+        dispatch(callback(false));
+      }
+    } catch (error) {
+      dispatch(fetchDataFailure(error.response.data));
+      dispatch(callback(false));
+    }
+  };
+};
+
+export const useRefresh = (token) => {
+  return async (dispatch) => {
+    await Cookies.remove('token');
+    await Cookies.set('token', 'token');
+  };
+};
+
+export const useLogout = () => {
+  return async (dispatch) => {
+    await Cookies.remove('token');
   };
 };
