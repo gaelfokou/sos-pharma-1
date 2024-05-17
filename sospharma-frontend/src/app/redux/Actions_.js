@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
@@ -25,25 +26,24 @@ export const tokenCreate = (callback=null) => {
   return async (dispatch) => {
     dispatch(fetchDataRequest());
     try {
-      const response = await requests.fetch(`${constants.baseUrl}/api/payment/token/`, 'POST');
-      const responseData = await response.json();
-      if (response.ok) {
-        if (response.status === 200) {
-          const date = moment().add(responseData.expires_in, 'seconds').format('YYYY-MM-DD HH:mm:ss');
-          const data = { ...responseData, expires_at: date };
-          dispatch(fetchTokenCreate(data));
-          dispatch(fetchDataSuccess());
-          if (callback !== null) {
-            dispatch(callback(data));
-          }
-        } else {
-          dispatch(fetchDataFailure(responseData));
+      const response = await requests.axios(`${constants.baseUrl}/api/payment/token/`, 'POST');
+      if (response.status === 200) {
+        const date = moment().add(response.data.expires_in, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+        const data = { ...response.data, expires_at: date };
+        dispatch(fetchTokenCreate(data));
+        dispatch(fetchDataSuccess());
+        if (callback !== null) {
+          dispatch(callback(data));
         }
       } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        dispatch(fetchDataFailure(response.data));
       }
     } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+      if (error.response !== undefined) {
+        dispatch(fetchDataFailure(error.response.data));
+      } else {
+        dispatch(fetchDataFailure(error.message));
+      }
     }
   };
 };
@@ -94,21 +94,20 @@ export const orderCreate = (token, data, callback) => {
           prescription: data.stepValue3[i]
         }))
       };
-      const response = await requests.fetch(`${constants.baseUrl}/api/order/create/`, 'POST', headers, params);
-      const responseData = await response.json();
-      if (response.ok) {
-        if (response.status === 200) {
-          dispatch(fetchOrderCreate(responseData));
-          dispatch(fetchDataSuccess());
-          dispatch(callback());
-        } else {
-          dispatch(fetchDataFailure(responseData));
-        }
+      const response = await requests.axios(`${constants.baseUrl}/api/order/create/`, 'POST', headers, params);
+      if (response.status === 200) {
+        dispatch(fetchOrderCreate(response.data));
+        dispatch(fetchDataSuccess());
+        dispatch(callback());
       } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        dispatch(fetchDataFailure(response.data));
       }
     } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+      if (error.response !== undefined) {
+        dispatch(fetchDataFailure(error.response.data));
+      } else {
+        dispatch(fetchDataFailure(error.message));
+      }
     }
   };
 };
@@ -123,21 +122,20 @@ export const orderRetrieve = (token, data) => {
           const headers = {
             'Authorization': `Token ${token.token}`,
           };
-          const response = await requests.fetch(`${constants.baseUrl}/api/order/retrieve/${order.id}/`, 'GET', headers);
-          const responseData = await response.json();
-          if (response.ok) {
-            if (response.status === 200) {
-              orders[i] = responseData
-              dispatch(fetchOrderRetrieve(orders));
-              dispatch(fetchDataSuccess());
-            } else {
-              dispatch(fetchDataFailure(responseData));
-            }
+          const response = await requests.axios(`${constants.baseUrl}/api/order/retrieve/${order.id}/`, 'GET', headers);
+          if (response.status === 200) {
+            orders[i] = response.data
+            dispatch(fetchOrderRetrieve(orders));
+            dispatch(fetchDataSuccess());
           } else {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            dispatch(fetchDataFailure(response.data));
           }
         } catch (error) {
-          dispatch(fetchDataFailure(error.message));
+          if (error.response !== undefined) {
+            dispatch(fetchDataFailure(error.response.data));
+          } else {
+            dispatch(fetchDataFailure(error.message));
+          }
         }
       }
     });
@@ -152,22 +150,21 @@ export const useLogin = (email, password, callback) => {
         email,
         password,
       };
-      const response = await requests.fetch(`${constants.baseUrl}/api/auth/token/`, 'POST', {}, params);
-      const responseData = await response.json();
-      if (response.ok) {
-        if (response.status === 200) {
-          await Cookies.set('token', responseData);
-          dispatch(fetchDataSuccess());
-          dispatch(callback(true));
-        } else {
-          dispatch(fetchDataFailure(responseData));
-          dispatch(callback(false));
-        }
+      const response = await requests.axios(`${constants.baseUrl}/api/auth/token/`, 'POST', {}, params);
+      if (response.status === 200) {
+        await Cookies.set('token', response.data);
+        dispatch(fetchDataSuccess());
+        dispatch(callback(true));
       } else {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        dispatch(fetchDataFailure(response.data));
+        dispatch(callback(false));
       }
     } catch (error) {
-      dispatch(fetchDataFailure(error.message));
+      if (error.response !== undefined) {
+        dispatch(fetchDataFailure(error.response.data));
+      } else {
+        dispatch(fetchDataFailure(error.message));
+      }
       dispatch(callback(false));
     }
   };

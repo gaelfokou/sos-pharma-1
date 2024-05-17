@@ -1,7 +1,9 @@
 'use client';
 
+import axios from 'axios';
+
 const requests = {
-  fetch: (url, method='GET', headers={}, data={}) => {
+  axios: (url, method='GET', headers={}, data={}) => {
     if (method === 'GET' || method === 'DELETE') {
       headers = {
         'Accept': 'application/json; charset=utf-8',
@@ -16,22 +18,19 @@ const requests = {
     }
 
     const options = {
-      method,
-      headers,
+      headers
     };
 
     if (method === 'POST') {
-      options.body = JSON.stringify(data);
-      return fetch(url, options);
+      return axios.post(url, data, options);
     } else if (method === 'PUT') {
-      options.body = JSON.stringify(data);
-      return fetch(url, options);
+      return axios.put(url, data, options);
     } else if (method === 'DELETE') {
-      const queryString = new URLSearchParams(data).toString();
-      return fetch(`${url}?${queryString}`, options);
+      options.params = data;
+      return axios.delete(url, options);
     } else {
-      const queryString = new URLSearchParams(data).toString();
-      return fetch(`${url}?${queryString}`, options);
+      options.params = data;
+      return axios.get(url, options);
     }
   }
 };
