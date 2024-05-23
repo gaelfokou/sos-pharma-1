@@ -1,19 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import logo from './assets/images/logo-sos-pharma.png';
-import $ from 'jquery';
-import Popper from 'popper.js';
 
 import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
   const dispatch = useDispatch();
   const { orderData } = useSelector(state => state.order);
-
-  useEffect(() => {
-    require('bootstrap/dist/js/bootstrap.bundle.min.js');
-  }, []);
 
   return (
     <div className="container">

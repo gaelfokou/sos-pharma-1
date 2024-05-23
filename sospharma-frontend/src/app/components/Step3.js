@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, handleChange, handleFocus, formData}) => {
+const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, handleChange, handleFocus, formData, isLoading}) => {
   useEffect(() => {
   }, [page, formData]);
 
@@ -46,7 +46,7 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           </div>
           <div className="form-group">
             <button type="submit" name="cancel" className="btn btn-outline-success rounded-lg">Annulez</button>
-            <button type="submit" name="pay" className="btn btn-success rounded-lg">Payez</button>
+            {isLoading ? (<button type="submit" name="load" className="btn btn-success rounded-lg" disabled><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Traitement en cours...</button>) : (<button type="submit" name="pay" className="btn btn-success rounded-lg">Payez</button>)}
           </div>
         </form>
       </div>

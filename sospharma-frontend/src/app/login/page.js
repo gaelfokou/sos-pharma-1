@@ -1,21 +1,26 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+
 import logo from '../assets/images/logo-sos-pharma.png';
 import $ from 'jquery';
 import Popper from 'popper.js';
-import { useRouter } from 'next/navigation';
 
+import { delay } from '../utils/Helpers';
+
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLogin } from '../redux/Actions';
+import { authLogin } from '../redux/Actions';
 
 const Login = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { orderData } = useSelector(state => state.order);
+  const { orderData, isLoading } = useSelector(state => state.order);
+
+  const propAuthLogin = (email, password, callback=null) => dispatch(authLogin(email, password, callback));
 
   const [toastAlert, setToastAlert] = useState(null);
-  const [formData, setFormData] = useState({
+  const [authData, setAuthData] = useState({
     email: "",
     password: "",
   });
@@ -29,13 +34,12 @@ const Login = () => {
     toast.on('hidden.bs.toast', function (event) {
     });
     setToastAlert(toast);
-  }, [formData]);
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const inputs = document.querySelectorAll('.form-group');
-    const submitter = event.nativeEvent.submitter.name;
     const form = event.target;
     var validForm = form.checkValidity();
     if (validForm) {
@@ -69,22 +73,20 @@ const Login = () => {
     }
     form.classList.add('was-validated');
     if (validForm) {
-      dispatch(useLogin(formData.email, formData.password, (isLogin) => {
+      propAuthLogin(authData.email, authData.password, (isData) => {
         const toast = document.querySelector('.toast-body');
-        if (isLogin) {
-          toast.textContent = "Connexion effectuée avec succès.";
+        if (isData.success) {
+          toast.textContent = isData.message;
           toastAlert.toast('show');
-          setFormData({ ...formData, email: "", password: "" });
-          push('/dashboard');
+          setAuthData({ ...authData, email: "", password: "" });
+          delay(function(){
+            push('/dashboard');
+          }, 3000);
         } else {
-          toast.textContent = "Adresse e-mail ou mot de passe incorrect.";
+          toast.textContent = isData.message;
           toastAlert.toast('show');
         }
-
-        return {
-          type: '',
-        };
-      }));
+      });
     }
   };
 
@@ -92,7 +94,7 @@ const Login = () => {
     event.preventDefault();
 
     const { form, name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setAuthData({ ...authData, [name]: value });
   };
 
   const handleFocus = (event) => {
@@ -113,7 +115,7 @@ const Login = () => {
       </div>
       <div className="row">
         <div className="col-md-12 py-5">
-          <div className="card">
+          <div className="card form-slide active">
             <div className="card-header text-center">
               <h6 className="card-title">Connexion</h6>
             </div>
@@ -128,14 +130,13 @@ const Login = () => {
                         className="form-control"
                         id="email"
                         placeholder="Adresse e-mail..."
-                        value={formData.email}
+                        value={authData.email}
                         onChange={handleChange}
                         onFocus={handleFocus}
                         required
                       />
                     </div>
                 </div>
-
                 <div className="form-group row">
                   <label htmlFor="password" className="col-md-4 col-form-label text-md-right">Mot de passe</label>
                   <div className="col-md-6">
@@ -145,17 +146,16 @@ const Login = () => {
                       className="form-control"
                       id="password"
                       placeholder="Mot de passe..."
-                      value={formData.password}
+                      value={authData.password}
                       onChange={handleChange}
                       onFocus={handleFocus}
                       required
                     />
                   </div>
                 </div>
-
                 <div className="form-group row">
                   <div className="col text-center">
-                    <button type="submit" name="submit" className="btn btn-success rounded-lg">Connexion</button>
+                    {isLoading ? (<button type="submit" name="load" className="btn btn-success rounded-lg" disabled><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Traitement en cours...</button>) : (<button type="submit" name="submit" className="btn btn-success rounded-lg">Connexion</button>)}
                   </div>
                 </div>
               </form>
@@ -165,8 +165,8 @@ const Login = () => {
       </div>
       <div className="row">
         <div className="col">
-          <div className="position-fixed bottom-0 right-0 p-3" style={{ zIndex: 5, right: 0, bottom: 0 }}>
-            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3500">
+          <div className="toast-alert position-fixed bottom-0 right-0 p-3">
+            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
               <div className="toast-header">
                 <img src={logo.src} className="rounded mr-2" width="30" alt="" />
                 <strong className="mr-auto">SOS Pharma</strong>
@@ -174,9 +174,7 @@ const Login = () => {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="toast-body">
-                Connexion effectuée avec succès.
-              </div>
+              <div className="toast-body"></div>
             </div>
           </div>
         </div>

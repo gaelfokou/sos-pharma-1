@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import index
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -32,6 +33,7 @@ urlpatterns += [
         'api/',
         include(
             [
+                path('', index, name='data_index'),
                 path('drug/', include('drug.urls')),
                 path('order/', include('order.urls')),
                 path('payment/', include('payment.urls')),

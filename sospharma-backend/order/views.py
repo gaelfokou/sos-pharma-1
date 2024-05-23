@@ -6,14 +6,37 @@ from rest_framework.response import Response
 import json
 import requests
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination
 from .models import Order, OrderDrug
 from drug.models import Drug
 from .serializers import OrderSerializer, OrderDrugSerializer
 from django.shortcuts import get_object_or_404
 from django.http.request import QueryDict
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def list(request):
+    search = request.GET.get('search', '')
+    page_size = request.GET.get('page_size', settings.REST_FRAMEWORK['PAGE_SIZE'])
+
+    paginator = PageNumberPagination()
+    paginator.page_size = page_size
+    orders = Order.objects.all()
+    orders = orders.filter(
+        (Q(name__icontains=search) | Q(phone__icontains=search) | Q(city__icontains=search) | Q(quarter__icontains=search) | Q(drugs__in=Drug.objects.filter(name__icontains=search)))
+    ).order_by('-id')
+    context = paginator.paginate_queryset(orders, request)
+    serializer = OrderSerializer(context, many=True)
+    serializer_data = []
+    for data in serializer.data:
+        data = dict(data)
+        for orderdrug in data['orderdrugs']:
+            drug = Drug.objects.get(id=orderdrug['drug'])
+            orderdrug['name'] = drug.name
+        serializer_data.append(data)
+    return paginator.get_paginated_response(serializer_data)
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])

@@ -1,14 +1,17 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+
 import logo from '../assets/images/logo-sos-pharma.png';
 import $ from 'jquery';
 import Popper from 'popper.js';
 import intlTelInput from 'intl-tel-input';
-import { useRouter } from 'next/navigation';
 
+import { delay } from '../utils/Helpers';
+
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormData, tokenCreate, tokenCheck, orderCreate, orderRetrieve } from '../redux/Actions';
+import { setFormData, tokenCheck, orderCreate } from '../redux/Actions';
 
 import Step1 from '../components/Step1';
 import Step2 from '../components/Step2';
@@ -17,7 +20,11 @@ import Step3 from '../components/Step3';
 const OrderDrug = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { token, formData, drugData, cityData, quarterData, orderData } = useSelector(state => state.order);
+  const { token, formData, drugData, cityData, quarterData, orderData, isLoading } = useSelector(state => state.order);
+
+  const propFormData = (data) => dispatch(setFormData(data));
+  const propTokenCheck = (token, callback=null) => dispatch(tokenCheck(token, callback));
+  const propOrderCreate = (token, data, callback=null) => dispatch(orderCreate(token, data, callback));
 
   const [page, setPage] = useState(1);
   const [phoneInput, setPhoneInput] = useState(null);
@@ -38,14 +45,6 @@ const OrderDrug = () => {
     toast.on('hidden.bs.toast', function (event) {
     });
     setToastAlert(toast);
-
-    dispatch(tokenCreate((data) => {
-      dispatch(tokenCheck(data, orderRetrieve, orderData));
-
-      return {
-        type: '',
-      };
-  }));
 
     const button = $('#v-pills-tab button[data-target="#v-pills-'+page+'"]');
     button.tab('show');
@@ -117,7 +116,7 @@ const OrderDrug = () => {
           input.classList.add('valid');
         }
       }); */
-      dispatch(setFormData({ ...formData, [input.name]: input.value }));
+      propFormData({ ...formData, [input.name]: input.value });
     }
   };
 
@@ -131,14 +130,14 @@ const OrderDrug = () => {
       if (page === 2) {
         if (name.value === "step7") {
           const searchQuarter = handleSearchQuarterByCity(data.value);
-          dispatch(setFormData({ ...formData, [name.value]: data.value, step8: "", stepResult8: searchQuarter }));
+          propFormData({ ...formData, [name.value]: data.value, step8: "", stepResult8: searchQuarter });
         } else if (name.value === "step8") {
-          dispatch(setFormData({ ...formData, [name.value]: data.value }));
+          propFormData({ ...formData, [name.value]: data.value });
         } else {
-          dispatch(setFormData({ ...formData, [name.value]: data.value, [result.value]: [] }));
+          propFormData({ ...formData, [name.value]: data.value, [result.value]: [] });
         }
       } else {
-        dispatch(setFormData({ ...formData, [name.value]: data.value, [result.value]: [] }));
+        propFormData({ ...formData, [name.value]: data.value, [result.value]: [] });
       }
     }
   };
@@ -180,18 +179,27 @@ const OrderDrug = () => {
     const submitter = event.nativeEvent.submitter.name;
     const form = event.target;
     if (submitter === "cancel") {
-      dispatch(setFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" }));
+      propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
       setPage(1);
     } else if (submitter === "pay") {
-      dispatch(tokenCheck(token, orderCreate, formData, () => {
-        dispatch(setFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" }));
-        toastAlert.toast('show');
-        push('/order-list');
-
-        return {
-          type: '',
-        };
-      }));
+      propTokenCheck(token, (tokenData) => {
+        propOrderCreate(tokenData, formData, (isData) => {
+          const toast = document.querySelector('.toast-body');
+          if (isData.success) {
+            toast.textContent = isData.message;
+            toastAlert.toast('show');
+            propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
+            delay(function(){
+              push('/order-list');
+            }, 3000);
+          } else {
+            toast.textContent = isData.message;
+            toastAlert.toast('show');
+          }
+          return { type: '' };
+        });
+        return { type: '' };
+      });
     } else {
       var validForm = form.checkValidity();
       if (validForm) {
@@ -253,13 +261,13 @@ const OrderDrug = () => {
             stepValue3 = [ ...formData.stepValue3, formData.step3 ];
           }
           if (submitter === "add") {
-            dispatch(setFormData({ ...formData, step1: "", stepValue1: [...stepValue1], stepResult1: [], step2: "", stepValue2: [...stepValue2], step3: "", stepValue3: [...stepValue3] }));
+            propFormData({ ...formData, step1: "", stepValue1: [...stepValue1], stepResult1: [], step2: "", stepValue2: [...stepValue2], step3: "", stepValue3: [...stepValue3] });
           } else {
-            dispatch(setFormData({ ...formData, stepValue1: [...stepValue1], stepValue2: [...stepValue2], stepValue3: [...stepValue3] }));
+            propFormData({ ...formData, stepValue1: [...stepValue1], stepValue2: [...stepValue2], stepValue3: [...stepValue3] });
             handleNext(event);
           }
         } else if (page === 2) {
-          /* dispatch(setFormData({ ...formData, step6: phoneInput.getNumber(intlTelInput.utils.numberFormat.E164) })); */
+          /* propFormData({ ...formData, step6: phoneInput.getNumber(intlTelInput.utils.numberFormat.E164) }); */
           handleNext(event);
         } else {
           handleNext(event);
@@ -316,25 +324,25 @@ const OrderDrug = () => {
     if (page === 1) {
       if (name === "step1") {
         const searchDrug = handleSearchDrug(value);
-        dispatch(setFormData({ ...formData, [name]: value, stepResult1: searchDrug }));
+        propFormData({ ...formData, [name]: value, stepResult1: searchDrug });
       } else {
-        dispatch(setFormData({ ...formData, [name]: value }));
+        propFormData({ ...formData, [name]: value });
       }
     } else if (page === 2) {
       if (name === "step7") {
         // const searchCity = handleSearchCity(value);
         const searchCity = [ ...formData.stepResult7 ];
         const searchQuarter = handleSearchQuarterByCity(value);
-        dispatch(setFormData({ ...formData, [name]: value, stepResult7: searchCity, step8: "", stepResult8: searchQuarter }));
+        propFormData({ ...formData, [name]: value, stepResult7: searchCity, step8: "", stepResult8: searchQuarter });
       } else if (name === "step8") {
         // const searchQuarter = handleSearchQuarter(value);
         const searchQuarter = [ ...formData.stepResult8 ];
-        dispatch(setFormData({ ...formData, [name]: value, stepResult8: searchQuarter }));
+        propFormData({ ...formData, [name]: value, stepResult8: searchQuarter });
       } else {
-        dispatch(setFormData({ ...formData, [name]: value }));
+        propFormData({ ...formData, [name]: value });
       }
     } else {
-      dispatch(setFormData({ ...formData, [name]: value }));
+      propFormData({ ...formData, [name]: value });
     }
   };
 
@@ -445,6 +453,7 @@ const OrderDrug = () => {
                 handleChange={handleChange}
                 handleFocus={handleFocus}
                 formData={formData}
+                isLoading={isLoading}
               />
             </div>
             <div className={`tab-pane slide ${page === 2 ? '' : 'd-none'}`} id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-2-tab">
@@ -457,6 +466,7 @@ const OrderDrug = () => {
                 handleChange={handleChange}
                 handleFocus={handleFocus}
                 formData={formData}
+                isLoading={isLoading}
               />
             </div>
             <div className={`tab-pane slide ${page === 3 ? '' : 'd-none'}`} id="v-pills-3" role="tabpanel" aria-labelledby="v-pills-3-tab">
@@ -469,6 +479,7 @@ const OrderDrug = () => {
                 handleChange={handleChange}
                 handleFocus={handleFocus}
                 formData={formData}
+                isLoading={isLoading}
               />
             </div>
           </div>
@@ -476,8 +487,8 @@ const OrderDrug = () => {
       </div>
       <div className="row">
         <div className="col">
-          <div className="position-fixed bottom-0 right-0 p-3" style={{ zIndex: 5, right: 0, bottom: 0 }}>
-            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3500">
+          <div className="toast-alert position-fixed bottom-0 right-0 p-3">
+            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
               <div className="toast-header">
                 <img src={logo.src} className="rounded mr-2" width="30" alt="" />
                 <strong className="mr-auto">SOS Pharma</strong>
@@ -485,9 +496,7 @@ const OrderDrug = () => {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="toast-body">
-                Paiement effectué avec succès.
-              </div>
+              <div className="toast-body"></div>
             </div>
           </div>
         </div>

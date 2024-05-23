@@ -1,8 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
-import 'intl-tel-input/build/css/intlTelInput.css';
-import './assets/css/style.css';
-
 import ReducerLayout from "./redux/ReducerLayout";
 import LayoutWrapper from "./components/LayoutWrapper";
 
