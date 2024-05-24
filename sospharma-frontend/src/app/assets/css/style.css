@@ -363,6 +363,10 @@ label {
 .btn-outline-dark.focus, .btn-outline-dark:focus {
   box-shadow: 0 0 0 .1rem rgba(52, 58, 64, .5) !important;
 }
+.rdt_TableHeader div:first-of-type {
+  font-weight: 700 !important;
+  font-size: 18px !important;
+}
 .rdt_TableHeadRow div[role="columnheader"] div {
   font-weight: 700 !important;
 }

@@ -1,17 +1,17 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import 'intl-tel-input/build/css/intlTelInput.css';
 import '../assets/css/style.css';
 
+import { tokenCheck, loadData } from '../redux/Actions';
+
 import Header from "./Header";
 import Footer from "./Footer";
-
-import { useDispatch, useSelector } from 'react-redux';
-import { tokenCheck, loadData } from '../redux/Actions';
 
 export default function LayoutPublic({ children }) {
   const dispatch = useDispatch();

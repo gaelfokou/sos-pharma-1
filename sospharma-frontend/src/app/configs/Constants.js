@@ -10,7 +10,10 @@ export const constants = {
   PAGE_SIZE: 10,
 };
 
+export const VERSION_STATE = 1;
+
 export const FETCH_FORM_DATA = 'FETCH_FORM_DATA';
+export const FETCH_PURGE_STATE = 'FETCH_PURGE_STATE';
 export const FETCH_LOAD_DATA = 'FETCH_LOAD_DATA';
 export const FETCH_TOKEN_CREATE = 'FETCH_TOKEN_CREATE';
 export const FETCH_ORDER_CREATE = 'FETCH_ORDER_CREATE';

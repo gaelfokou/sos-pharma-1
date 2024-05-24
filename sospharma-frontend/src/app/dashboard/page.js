@@ -1,17 +1,16 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
-import logo from '../assets/images/logo-sos-pharma.png';
 import $ from 'jquery';
 import Popper from 'popper.js';
 
+import { authLogout } from '../redux/Actions';
+
 import Sidebar from "../components/Sidebar";
 import Dashboard1 from "../components/Dashboard1";
-
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { authLogout } from '../redux/Actions';
 
 const Dashboard = () => {
   const { push } = useRouter();

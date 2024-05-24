@@ -1,17 +1,16 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
-import logo from '../assets/images/logo-sos-pharma.png';
 import $ from 'jquery';
 import Popper from 'popper.js';
 import intlTelInput from 'intl-tel-input';
 
-import { delay } from '../utils/Helpers';
-
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import logo from '../assets/images/logo-sos-pharma.png';
 import { setFormData, tokenCheck, orderCreate } from '../redux/Actions';
+import { delay } from '../utils/Helpers';
 
 import Step1 from '../components/Step1';
 import Step2 from '../components/Step2';
@@ -191,7 +190,7 @@ const OrderDrug = () => {
             propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
             delay(function(){
               push('/order-list');
-            }, 3000);
+            }, 2500);
           } else {
             toast.textContent = isData.message;
             toastAlert.toast('show');
@@ -488,7 +487,7 @@ const OrderDrug = () => {
       <div className="row">
         <div className="col">
           <div className="toast-alert position-fixed bottom-0 right-0 p-3">
-            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500">
               <div className="toast-header">
                 <img src={logo.src} className="rounded mr-2" width="30" alt="" />
                 <strong className="mr-auto">SOS Pharma</strong>

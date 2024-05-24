@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 import $ from 'jquery';
 import Popper from 'popper.js';
@@ -8,9 +10,6 @@ import moment from 'moment';
 import DataTable from 'react-data-table-component';
 
 import { constants } from '../configs/Constants';
-
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
 import { orderList } from '../redux/Actions';
 
 const Dashboard1 = () => {
@@ -36,27 +35,33 @@ const Dashboard1 = () => {
 		},
 		{
 			name: 'Téléphone',
-			selector: row => row.phone.toString().substr(row.phone.toString().length - 9),
+			selector: row => row.phone,
+			format: (row, index) => row.phone.toString().substr(row.phone.toString().length - 9),
 		},
 		{
 			name: 'Lieu',
-			selector: row => `${row.city} - ${row.quarter}`,
+			selector: row => row.city,
+			format: (row, index) => `${row.city} - ${row.quarter}`,
 		},
 		{
 			name: 'Médicaments',
-			selector: row => row.orderdrugs.map((drug, index) => `${drug.name}\nQté : ${drug.quantity}\nPresc : ${drug.prescription}`).join(',\n---\n'),
+			selector: row => row.orderdrugs,
+			format: (row, index) => row.orderdrugs.map((drug, index) => `${drug.name}\nQté : ${drug.quantity}\nPresc : ${drug.prescription}`).join(',\n---\n'),
 		},
 		{
 			name: 'Montant',
-			selector: row => `${new Intl.NumberFormat('de-DE').format(row.payment.amount)} CFA`,
+			selector: row => row.payment,
+			format: (row, index) => `${new Intl.NumberFormat('de-DE').format(row.payment.amount)} CFA`,
 		},
 		{
 			name: 'Statut',
-			selector: row => row.payment.reason !== null ? constants[row.payment.reason] : constants[row.payment.status],
+			selector: row => row.payment,
+			format: (row, index) => row.payment.reason !== null ? constants[row.payment.reason] : constants[row.payment.status],
 		},
 		{
 			name: 'Date',
-			selector: row => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
+			selector: row => row.created_at,
+			format: (row, index) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
 		},
 	];
 
@@ -106,6 +111,7 @@ const Dashboard1 = () => {
 				title="Liste des commandes"
 				columns={columns}
 				data={results}
+				noDataComponent="Il n'y a pas de commandes à afficher..."
 				pagination
 				paginationComponentOptions={paginationComponentOptions}
 				paginationServer

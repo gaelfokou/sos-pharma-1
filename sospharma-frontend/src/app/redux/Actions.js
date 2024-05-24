@@ -3,11 +3,11 @@
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
-import { constants } from '../configs/Constants';
-import { FETCH_FORM_DATA, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
+import { constants, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
 import requests from './Requests';
 
 export const fetchFormData = (data) => ({ type: FETCH_FORM_DATA, payload: data });
+export const fetchPurgeStoredState = () => ({ type: FETCH_PURGE_STATE, payload: '' });
 export const fetchLoadData = (data) => ({ type: FETCH_LOAD_DATA, payload: data });
 export const fetchPaymentToken = (data) => ({ type: FETCH_TOKEN_CREATE, payload: data });
 export const fetchOrderCreate = (data) => ({ type: FETCH_ORDER_CREATE, payload: data });
@@ -21,6 +21,12 @@ export const fetchDataFailure = (error) => ({ type: FETCH_DATA_FAILURE, payload:
 export const setFormData = (data) => {
   return async (dispatch) => {
     dispatch(fetchFormData(data));
+  };
+};
+
+export const purgeStoredState = () => {
+  return async (dispatch) => {
+    dispatch(fetchPurgeStoredState());
   };
 };
 

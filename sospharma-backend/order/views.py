@@ -26,7 +26,7 @@ def list(request):
     orders = Order.objects.all()
     orders = orders.filter(
         (Q(name__icontains=search) | Q(phone__icontains=search) | Q(city__icontains=search) | Q(quarter__icontains=search) | Q(drugs__in=Drug.objects.filter(name__icontains=search)))
-    ).order_by('-id')
+    ).distinct().order_by('-id')
     context = paginator.paginate_queryset(orders, request)
     serializer = OrderSerializer(context, many=True)
     serializer_data = []

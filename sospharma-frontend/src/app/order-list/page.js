@@ -2,15 +2,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-import logo from '../assets/images/logo-sos-pharma.png';
+import { useDispatch, useSelector } from 'react-redux';
+
 import $ from 'jquery';
 import Popper from 'popper.js';
 import intlTelInput from 'intl-tel-input';
 import moment from 'moment';
 
 import { constants } from '../configs/Constants';
-
-import { useDispatch, useSelector } from 'react-redux';
 import { tokenCheck, orderRetrieve } from '../redux/Actions';
 
 const OrderList = () => {
@@ -28,7 +27,7 @@ const OrderList = () => {
         propOrderRetrieve(tokenData, orderData);
         return { type: '' };
       });
-    }, 10000);
+    }, 5000);
 
     const buttons = document.querySelectorAll('.list-group-item');
     buttons.forEach(button => {

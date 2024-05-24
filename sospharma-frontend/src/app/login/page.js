@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-import logo from '../assets/images/logo-sos-pharma.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+
 import $ from 'jquery';
 import Popper from 'popper.js';
 
-import { delay } from '../utils/Helpers';
-
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import logo from '../assets/images/logo-sos-pharma.png';
 import { authLogin } from '../redux/Actions';
+import { delay } from '../utils/Helpers';
 
 const Login = () => {
   const { push } = useRouter();
@@ -81,7 +81,7 @@ const Login = () => {
           setAuthData({ ...authData, email: "", password: "" });
           delay(function(){
             push('/dashboard');
-          }, 3000);
+          }, 2500);
         } else {
           toast.textContent = isData.message;
           toastAlert.toast('show');
@@ -166,7 +166,7 @@ const Login = () => {
       <div className="row">
         <div className="col">
           <div className="toast-alert position-fixed bottom-0 right-0 p-3">
-            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+            <div className="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2500">
               <div className="toast-header">
                 <img src={logo.src} className="rounded mr-2" width="30" alt="" />
                 <strong className="mr-auto">SOS Pharma</strong>
