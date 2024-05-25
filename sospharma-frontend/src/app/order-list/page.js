@@ -77,21 +77,24 @@ const OrderList = () => {
                 {orderData.slice().sort((a, b) => b.id - a.id).map((order, index1) => (
                   order.payment.status === constants.PATH_PENDING ? (
                     <li key={index1} className="list-group-item list-group-item-action">
-                      <p>{`n° ${order.id}. ${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)} - ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                      <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                      <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
                       <p>{`${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? constants[order.payment.reason] : constants[order.payment.status]}`} <span className="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true"></span></p>
                       <p><a class="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
                     </li>
                   ) : (
                     order.payment.status === constants.PATH_SUCCESSFUL ? (
                       <li key={index1} className="list-group-item list-group-item-action">
-                        <p>{`n° ${order.id}. ${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)} - ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                          <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                          <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
                         <p>{`${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? constants[order.payment.reason] : constants[order.payment.status]}`}</p>
                         <p><a class="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
                       </li>
                     ) : (
                       <>
                         <li key={index1} className="list-group-item list-group-item-action">
-                          <p>{`n° ${order.id}. ${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)} - ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                          <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                          <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
                           <p>{`${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? constants[order.payment.reason] : constants[order.payment.status]}`}</p>
                           <p><a class="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
                         </li>
