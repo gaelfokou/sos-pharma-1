@@ -85,7 +85,7 @@ const OrderDrug = () => {
   const handleEvent = (event) => {
     event.preventDefault();
 
-    const target = parseInt(event.target.getAttribute('data-target').replace('#v-pills-',''));
+    const target = Number.parseInt(event.target.getAttribute('data-target').replace('#v-pills-',''));
     setPage(target);
   };
 
@@ -166,8 +166,25 @@ const OrderDrug = () => {
   const handleClick = (event) => {
     event.preventDefault();
 
-    const button = document.querySelector('#form-'+page+' button[type="submit"][name="submit"]');
-    button.click();
+    const name = event.target.parentNode.attributes.getNamedItem('data-name');
+    const data = event.target.parentNode.attributes.getNamedItem('data-value');
+    if (name !== null) {
+      if (page === 3) {
+        if (name.value === "delete") {
+          const index = Number.parseInt(data.value);
+          var stepValue1 = [ ...formData.stepValue1 ];
+          var stepValue2 = [ ...formData.stepValue2 ];
+          var stepValue3 = [ ...formData.stepValue3 ];
+          stepValue1.splice(index, 1);
+          stepValue2.splice(index, 1);
+          stepValue3.splice(index, 1);
+          propFormData({ ...formData, stepValue1: [...stepValue1], stepValue2: [...stepValue2], stepValue3: [...stepValue3] });
+        }
+      }
+    } else {
+      const button = document.querySelector('#form-'+page+' button[type="submit"][name="submit"]');
+      button.click();
+    }
   };
 
   const handleSubmit = (event) => {
@@ -187,9 +204,9 @@ const OrderDrug = () => {
           if (isData.success) {
             toast.textContent = isData.message;
             toastAlert.toast('show');
-            propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
             delay(function(){
               push('/order-list');
+              propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
             }, 2500);
           } else {
             toast.textContent = isData.message;
@@ -249,14 +266,14 @@ const OrderDrug = () => {
             if (index !== -1) {
               stepValue1[indexName] = drugData[index];
             }
-            stepValue2[indexName] = parseInt(formData.step2);
+            stepValue2[indexName] = Number.parseInt(formData.step2);
             stepValue3[indexName] = formData.step3;
           } else {
             const index = drugData.findLastIndex((d) => d.name.toLowerCase() === value.toLowerCase());
             if (index !== -1) {
               stepValue1 = [ ...stepValue1, drugData[index] ];
             }
-            stepValue2 = [ ...stepValue2, parseInt(formData.step2) ];
+            stepValue2 = [ ...stepValue2, Number.parseInt(formData.step2) ];
             stepValue3 = [ ...formData.stepValue3, formData.step3 ];
           }
           if (submitter === "add") {
@@ -431,7 +448,7 @@ const OrderDrug = () => {
     <div className="container">
       <div className="row">
         <div className="col pt-5">
-          <div class="d-flex justify-content-between">
+          <div className="d-flex justify-content-between">
             <a className="h6 font-weight-bold text-success" href="/">SOS Pharma</a>
             {orderData.length > 0 ? (<a className="h6 font-weight-bold text-success" href="/order-list">Historique ({`${orderData.length}`})</a>) : (<a className="h6 font-weight-bold text-success" href="/order-list">Historique</a>)}
           </div>

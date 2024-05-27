@@ -5,6 +5,9 @@
 .btn.btn-width-30 {
   width: 30% !important;
 }
+.btn.btn-width-50 {
+  width: 50% !important;
+}
 .btn.rounded-lg.rounded-before::before {
   display: inline-block;
   content: "<--";
@@ -236,6 +239,7 @@ p {
 }
 .table tr {
   color: #212529;
+  background: transparent !important;
   border-color: #dee2e6 !important;
 }
 .table tr:nth-of-type(odd) {
@@ -284,10 +288,43 @@ label {
 }
 .list-group-item {
   color: #212529;
+  background: transparent !important;
+  border-color: #dee2e6 !important;
+}
+.list-group-item:focus, .list-group-item:hover {
+  background-color: rgba(0, 0, 0, .05) !important;
   border-color: #dee2e6 !important;
 }
 .list-group-item:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item {
+  background: transparent !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item + .collapse .list-group-item:last-of-type {
+  background: transparent !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item + .collapse .list-group-item:nth-of-type(odd):last-of-type {
+  background: transparent !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item:nth-of-type(odd) + .collapse .list-group-item:last-of-type {
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item:nth-of-type(odd) + .collapse .list-group-item:nth-of-type(odd):last-of-type {
+  background-color: rgba(0, 0, 0, .03) !important;
+  border-color: #dee2e6 !important;
+}
+.order .list-group-item + .collapse .list-group-item:focus, .order .list-group-item + .collapse .list-group-item:hover {
+  background-color: rgba(0, 0, 0, .05) !important;
   border-color: #dee2e6 !important;
 }
 .list-group-item.active {
@@ -300,10 +337,6 @@ label {
   background-color: rgba(0, 0, 0, .03) !important;
   border-color: #dee2e6 !important;
 }
-.list-group-item:focus, .list-group-item:hover {
-  background-color: rgba(0, 0, 0, .05) !important;
-  border-color: #dee2e6 !important;
-}
 @media (max-width: 991.98px) {
   .card-body .form-group.row {
     margin-bottom: 0 !important;
@@ -311,17 +344,6 @@ label {
   .card-body .form-group.row:last-of-type {
     margin-top: .5rem !important;
   }
-}
-#sidebar .card {
-  border-radius: 0 !important;
-}
-#sidebar .card-header {
-  border-radius: 0 !important;
-}
-.list-group-item:focus, .list-group-item:hover {
-  color: #1e7e34 !important;
-  background-color: rgba(0, 0, 0, .05) !important;
-  border-color: #dee2e6 !important;
 }
 .toast-alert {
   right: 0;
@@ -333,8 +355,7 @@ label {
   background-color: #fff !important;
   border-color: #dee2e6 !important;
 }
-#sidebar .list-group-item:nth-of-type(odd):focus, .list-group-item:nth-of-type(odd):hover {
-  color: #1e7e34 !important;
+#sidebar .list-group-item:nth-of-type(odd):focus, #sidebar .list-group-item:nth-of-type(odd):hover {
   background-color: rgba(0, 0, 0, .05) !important;
   border-color: #dee2e6 !important;
 }
@@ -344,6 +365,7 @@ label {
   width: 18rem;
   position: absolute;
   z-index: 1;
+  border-radius: 0 !important;
 }
 #sidebar.active .card {
   animation: slide-from-left 500ms ease-out !important;
@@ -351,8 +373,8 @@ label {
 }
 #sidebar .show-sidebar {
   display: block;
-  background-color: rgba(0, 0, 0, 0);  
-  border: 1px solid rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0) !important;  
+  border: 1px solid rgba(0, 0, 0, 0.9) !important;
   border-radius: 4px;
   padding: 9px;
   width: 42px;
@@ -362,6 +384,22 @@ label {
 }
 #sidebar.active .show-sidebar {
   display: none;
+}
+#sidebar .card-header {
+  border-radius: 0 !important;
+}
+.btn-delete {
+  display: block;
+  background-color: rgba(0, 0, 0, 0) !important;  
+  border: 1px solid rgba(0, 0, 0, 0.9) !important;
+  border-radius: 4px;
+  padding: 3px;
+  width: 32px;
+}
+.btn-delivery {
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0) !important;  
+  border: none !important;
 }
 .form-slide {
   animation: slide-to-down 500ms ease-out !important;

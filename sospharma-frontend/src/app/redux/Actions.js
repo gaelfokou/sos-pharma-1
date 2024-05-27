@@ -3,16 +3,18 @@
 import moment from 'moment';
 import Cookies from 'js-cookie';
 
-import { constants, FETCH_SEARCH_DATA, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
+import { constants, FETCH_SEARCH_DATA, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_DELIVERY, FETCH_ORDER_PAYMENT, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
 import requests from './Requests';
 
 export const fetchFormData = (data) => ({ type: FETCH_FORM_DATA, payload: data });
 export const fetchSearchData = (data) => ({ type: FETCH_SEARCH_DATA, payload: data });
-export const fetchPurgeStoredState = () => ({ type: FETCH_PURGE_STATE, payload: '' });
+export const fetchPurgeStoredState = () => ({ type: FETCH_PURGE_STATE });
 export const fetchLoadData = (data) => ({ type: FETCH_LOAD_DATA, payload: data });
 export const fetchPaymentToken = (data) => ({ type: FETCH_TOKEN_CREATE, payload: data });
 export const fetchOrderCreate = (data) => ({ type: FETCH_ORDER_CREATE, payload: data });
 export const fetchOrderRetrieve = (data) => ({ type: FETCH_ORDER_RETRIEVE, payload: data });
+export const fetchOrderDelivery = () => ({ type: FETCH_ORDER_DELIVERY });
+export const fetchOrderPayment = () => ({ type: FETCH_ORDER_PAYMENT });
 export const fetchOrderList = (data) => ({ type: FETCH_ORDER_LIST, payload: data });
 export const fetchAuthRetrieve = (data) => ({ type: FETCH_AUTH_RETRIEVE, payload: data });
 export const fetchDataRequest = () => ({ type: FETCH_DATA_REQUEST });
@@ -151,7 +153,7 @@ export const orderCreate = (token, data, callback=null) => {
           if (callback !== null) {
             dispatch(callback({
               title: "Success",
-              message: "Veuillez confirmer le paiement sur votre téléphone",
+              message: `Veuillez confirmer le paiement à votre numéro de téléphone ${responseData.phone.toString().substr(responseData.phone.toString().length - 9)}`,
               type: 'success',
               success: true
             }));
@@ -194,7 +196,7 @@ export const orderRetrieve = (token, data) => {
   return async (dispatch) => {
     var orders = [ ...data ];
     data.forEach(async (order, i) => {
-      if (order.payment.status === constants.PATH_PENDING) {
+      if (order.payments[order.payments.length - 1].status === constants.PATH_PENDING) {
         // dispatch(fetchDataRequest());
         try {
           const headers = {
@@ -218,6 +220,38 @@ export const orderRetrieve = (token, data) => {
         }
       }
     });
+  };
+};
+
+export const orderDelivery = (token, data, callback=null) => {
+  return async (dispatch) => {
+    if (data.payments[data.payments.length - 1].status === constants.PATH_SUCCESSFUL) {
+      // dispatch(fetchDataRequest());
+      try {
+        const headers = {
+          'Authorization': `Bearer ${token.access}`,
+        };
+        const response = await requests.fetch(`${constants.baseUrl}/api/order/delivery/${data.id}/`, 'PUT', headers);
+        if (response.ok) {
+          const responseData = await response.json();
+          if (response.status === 200) {
+            dispatch(fetchOrderDelivery());
+            // dispatch(fetchDataSuccess());
+            if (callback !== null) {
+              dispatch(callback(token));
+            } else {
+              dispatch({ type: '' });
+            }
+          } else {
+            // dispatch(fetchDataFailure(responseData));
+          }
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        // dispatch(fetchDataFailure(error.message));
+      }
+    }
   };
 };
 

@@ -12,9 +12,9 @@ class OrderSerializer(serializers.ModelSerializer):
     phone = serializers.IntegerField(required=True)
     city = serializers.CharField(required=True)
     quarter = serializers.CharField(required=True)
-    payment = PaymentSerializer(read_only=True)
+    payments = PaymentSerializer(many=True, read_only=True)
     orderdrugs = OrderDrugSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ('id', 'name', 'phone', 'city', 'quarter', 'created_at', 'updated_at', 'payment', 'orderdrugs')
+        fields = ('id', 'name', 'phone', 'city', 'quarter', 'delivery', 'created_at', 'updated_at', 'payments', 'orderdrugs')

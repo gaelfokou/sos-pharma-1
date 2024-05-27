@@ -9,6 +9,16 @@ class Order(models.Model):
     city = models.CharField(_('City'), max_length=255, blank=True, null=True, default=None)
     quarter = models.CharField(_('Quarter'), max_length=255, blank=True, null=True, default=None)
     drugs = models.ManyToManyField(Drug, related_name='orders', through='OrderDrug')
+
+    OUI = 'Oui'
+    NON = 'Non'
+
+    DELIVERY_CHOICES = (
+        (OUI, _('Oui')),
+        (NON, _('Non')),
+    )
+
+    delivery = models.CharField(_('Delivery'), max_length=255, choices=DELIVERY_CHOICES, blank=True, null=True, default=NON)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

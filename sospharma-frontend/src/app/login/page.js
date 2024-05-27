@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
@@ -78,9 +77,9 @@ const Login = () => {
         if (isData.success) {
           toast.textContent = isData.message;
           toastAlert.toast('show');
-          setAuthData({ ...authData, email: "", password: "" });
           delay(function(){
             push('/dashboard');
+            setAuthData({ ...authData, email: "", password: "" });
           }, 2500);
         } else {
           toast.textContent = isData.message;
@@ -110,7 +109,7 @@ const Login = () => {
     <div className="container">
       <div className="row">
         <div className="col pt-5">
-          <div class="d-flex justify-content-between">
+          <div className="d-flex justify-content-between">
             <a className="h6 font-weight-bold text-success" href="/">SOS Pharma</a>
             {orderData.length > 0 ? (<a className="h6 font-weight-bold text-success" href="/order-list">Historique ({`${orderData.length}`})</a>) : (<a className="h6 font-weight-bold text-success" href="/order-list">Historique</a>)}
           </div>
@@ -125,7 +124,7 @@ const Login = () => {
             <div className="card-body px-2 py-2">
               <form id="form-1" className="needs-validation" autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <div className="form-group row">
-                    <label htmlFor="email" className="col-md-4 col-form-label text-md-right">Adresse e-mail</label>
+                    <label htmlFor="email" className="col-md-4 col-form-label text-center text-md-right">Adresse e-mail</label>
                     <div className="col-md-6">
                       <input
                         type="email"
@@ -141,7 +140,7 @@ const Login = () => {
                     </div>
                 </div>
                 <div className="form-group row">
-                  <label htmlFor="password" className="col-md-4 col-form-label text-md-right">Mot de passe</label>
+                  <label htmlFor="password" className="col-md-4 col-form-label text-center text-md-right">Mot de passe</label>
                   <div className="col-md-6">
                     <input
                       type="password"

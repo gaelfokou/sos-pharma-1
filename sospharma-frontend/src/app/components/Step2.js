@@ -76,7 +76,7 @@ const Step2 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                 <option value="" disabled>Sélectionnez votre réponse ici...</option>
                 {formData.stepResult7.length > 0 && (
                   formData.stepResult7.map((city, index) => (
-                    <option value={`${city.name}`}>{`${city.name}`}</option>
+                    <option key={index} value={`${city.name}`}>{`${city.name}`}</option>
                   ))
                 )}
               </select>
@@ -102,7 +102,7 @@ const Step2 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                 <option value="" disabled>Sélectionnez votre réponse ici...</option>
                 {formData.stepResult8.length > 0 && (
                   formData.stepResult8.map((quarter, index) => (
-                    <option value={`${quarter.name}`}>{`${quarter.name}`}</option>
+                    <option key={index} value={`${quarter.name}`}>{`${quarter.name}`}</option>
                   ))
                 )}
               </select>

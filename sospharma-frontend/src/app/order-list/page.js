@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import $ from 'jquery';
@@ -14,7 +13,7 @@ import { tokenCheck, orderRetrieve } from '../redux/Actions';
 
 const OrderList = () => {
   const dispatch = useDispatch();
-  const { token, orderData } = useSelector(state => state.order);
+  const { token, orderData, isLoading } = useSelector(state => state.order);
 
   const propTokenCheck = (token, callback=null) => dispatch(tokenCheck(token, callback));
   const propOrderRetrieve = (token, data) => dispatch(orderRetrieve(token, data));
@@ -60,7 +59,7 @@ const OrderList = () => {
     <div className="container">
       <div className="row">
         <div className="col pt-5">
-          <div class="d-flex justify-content-between">
+          <div className="d-flex justify-content-between">
             <a className="h6 font-weight-bold text-success" href="/">SOS Pharma</a>
             {orderData.length > 0 ? (<a className="h6 font-weight-bold text-success" href="/order-list">Historique ({`${orderData.length}`})</a>) : (<a className="h6 font-weight-bold text-success" href="/order-list">Historique</a>)}
           </div>
@@ -68,51 +67,86 @@ const OrderList = () => {
       </div>
       <div className="row">
         <div className="col-md-12 py-5">
-          <div className="card">
+          <div className="card order">
             <div className="card-header text-center">
               <h6 className="card-title">Historique des commandes</h6>
             </div>
             <div className="card-body px-2 py-2">
-              {orderData.length > 0 ? (<ul className="list-group list-group-flush">
-                {orderData.slice().sort((a, b) => b.id - a.id).map((order, index1) => (
-                  order.payment.status === constants.PATH_PENDING ? (
-                    <li key={index1} className="list-group-item list-group-item-action">
-                      <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
-                      <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
-                      <p>{`${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? constants[order.payment.reason] : constants[order.payment.status]}`} <span className="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true"></span></p>
-                      <p><a class="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
-                    </li>
-                  ) : (
-                    order.payment.status === constants.PATH_SUCCESSFUL ? (
-                      <li key={index1} className="list-group-item list-group-item-action">
-                          <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
-                          <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
-                        <p>{`${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? constants[order.payment.reason] : constants[order.payment.status]}`}</p>
-                        <p><a class="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
-                      </li>
-                    ) : (
+              {orderData.length > 0 ? (
+                <ul className="list-group list-group-flush">
+                  {orderData.slice().sort((a, b) => b.id - a.id).map((order, index1) => (
+                    order.payments[order.payments.length - 1].status === constants.PATH_PENDING ? (
                       <>
                         <li key={index1} className="list-group-item list-group-item-action">
                           <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
                           <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
-                          <p>{`${new Intl.NumberFormat('de-DE').format(order.payment.amount)} CFA - ${order.payment.reason !== null ? constants[order.payment.reason] : constants[order.payment.status]}`}</p>
-                          <p><a class="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
+                          <p><span>{`${new Intl.NumberFormat('de-DE').format(order.payments[order.payments.length - 1].amount)} CFA`}</span> - <span className="text-warning">{`${order.payments[order.payments.length - 1].reason !== null ? constants[order.payments[order.payments.length - 1].reason] : constants[order.payments[order.payments.length - 1].status]}`}</span> <span className="spinner-grow spinner-grow-sm text-success" role="status" aria-hidden="true"></span></p>
+                          <p><a className="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
                         </li>
-                        <div class="collapse" id={`collapseExample${index1 + 1}`}>
-                          <ul class="list-group list-group-flush">
+                        <div className="collapse" id={`collapseExample${index1 + 1}`}>
+                          <ul className="list-group list-group-flush">
                             {order.orderdrugs.map((drug, index2) => (
-                              <li key={index2} class="list-group-item">{`${drug.name} * ${drug.quantity} Qté(s)`}</li>
+                              <li key={`${index1}${index2}`} className="list-group-item">
+                                <p>{`${drug.name}`}</p>
+                                <p>{`Qté(s) : ${drug.quantity}`}</p>
+                                <p>{`Presc : ${drug.prescription}`}</p>
+                              </li>
                             ))}
-                            <li class="list-group-item"><p><a className="text-success pull-right" href="#">Réessayez de nouveau le paiement</a></p></li>
                           </ul>
                         </div>
                       </>
+                    ) : (
+                      order.payments[order.payments.length - 1].status === constants.PATH_SUCCESSFUL ? (
+                        <>
+                          <li key={index1} className="list-group-item list-group-item-action">
+                              <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                              <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
+                            <p><span>{`${new Intl.NumberFormat('de-DE').format(order.payments[order.payments.length - 1].amount)} CFA`}</span> - <span className="text-success">{`${order.payments[order.payments.length - 1].reason !== null ? constants[order.payments[order.payments.length - 1].reason] : constants[order.payments[order.payments.length - 1].status]}`}</span></p>
+                            <p><a className="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
+                          </li>
+                          <div className="collapse" id={`collapseExample${index1 + 1}`}>
+                            <ul className="list-group list-group-flush">
+                              {order.orderdrugs.map((drug, index2) => (
+                                <li key={`${index1}${index2}`} className="list-group-item">
+                                  <p>{`${drug.name}`}</p>
+                                  <p>{`Qté(s) : ${drug.quantity}`}</p>
+                                  <p>{`Presc : ${drug.prescription}`}</p>
+                                </li>
+                              ))}
+                              {isLoading ? (<li className="list-group-item"><p><a className="text-success pull-right" href="#">Traitement en cours...</a></p></li>) : (<li className="list-group-item"><p><a className="text-success pull-right" href="#">Payez de nouveau cette commande</a></p></li>)}
+                            </ul>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <li key={index1} className="list-group-item list-group-item-action">
+                            <p>{`n° ${order.id}. ${moment(order.created_at).format('DD-MM-YYYY HH:mm:ss')}`}</p>
+                            <p>{`${order.name} - ${order.phone.toString().substr(order.phone.toString().length - 9)}`}</p>
+                            <p><span>{`${new Intl.NumberFormat('de-DE').format(order.payments[order.payments.length - 1].amount)} CFA`}</span> - <span className="text-danger">{`${order.payments[order.payments.length - 1].reason !== null ? constants[order.payments[order.payments.length - 1].reason] : constants[order.payments[order.payments.length - 1].status]}`}</span></p>
+                            <p><a className="text-success pull-right" data-toggle="collapse" href={`#collapseExample${index1 + 1}`} role="button" aria-expanded="false" aria-controls={`collapseExample${index1 + 1}`}>Voir les détails</a></p>
+                          </li>
+                          <div className="collapse" id={`collapseExample${index1 + 1}`}>
+                            <ul className="list-group list-group-flush">
+                              {order.orderdrugs.map((drug, index2) => (
+                                <li key={`${index1}${index2}`} className="list-group-item">
+                                  <p>{`${drug.name}`}</p>
+                                  <p>{`Qté(s) : ${drug.quantity}`}</p>
+                                  <p>{`Presc : ${drug.prescription}`}</p>
+                                </li>
+                              ))}
+                              {isLoading ? (<li className="list-group-item"><p><a className="text-success pull-right" href="#">Traitement en cours...</a></p></li>) : (<li className="list-group-item"><p><a className="text-success pull-right" href="#">Réessayez de nouveau le paiement</a></p></li>)}
+                            </ul>
+                          </div>
+                        </>
+                      )
                     )
-                  )
-                ))}
-              </ul>) : (<ul className="list-group list-group-flush">
-                <li className="list-group-item list-group-item-action">Pas de commandes disponibles...</li>
-              </ul>)}
+                  ))}
+                </ul>
+              ) : (
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item list-group-item-action">Pas de commandes disponibles...</li>
+                </ul>
+              )}
             </div>
           </div>
         </div>

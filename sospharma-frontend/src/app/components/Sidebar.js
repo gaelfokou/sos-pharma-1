@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 const Sidebar = ({ handleClick }) => {
@@ -48,18 +47,18 @@ const Sidebar = ({ handleClick }) => {
   };
 
   return (
-    <sidebar id="sidebar">
+    <div id="sidebar">
       <div className="container">
         <div className="row">
           <div className="col pt-5">
-            <a class="btn btn-outline-dark text-body btn-sidebar show-sidebar" href="#">
-              <i class="fa fa-reorder"></i>
+            <a className="btn btn-outline-dark text-body btn-sidebar show-sidebar" href="#">
+              <i className="fa fa-reorder"></i>
             </a>
             <div className="card">
               <div className="card-header d-flex justify-content-between">
                 <span className="font-weight-bold">{`${auth !== null ? auth.email : ''}`}</span>
                 <a className="text-body btn-sidebar close-sidebar" href="#">
-                  <i class="fa fa-times"></i>
+                  <i className="fa fa-times"></i>
                 </a>
               </div>
               <div className="card-body">
@@ -72,7 +71,7 @@ const Sidebar = ({ handleClick }) => {
           </div>
         </div>
       </div>
-    </sidebar>
+    </div>
   );
 };
 

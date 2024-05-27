@@ -19,19 +19,16 @@ from django.http.request import QueryDict
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def list(request):
+    search = request.GET.get('search', '')
+    page_size = request.GET.get('page_size', settings.REST_FRAMEWORK['PAGE_SIZE'])
+
+    token = f"Token {settings.CAMPAY_PERMANENT_ACCESS_TOKEN}"
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
         'Content-Type': 'application/json; charset=utf-8',
         'Accept': 'application/json; charset=utf-8',
+        'Authorization': token,
     }
-    response = requests.post(settings.REDIRECT_BASE_URL + '/api/payment/token/', headers=headers)
-
-    if response.status_code == 200:
-        token = response.json()['token']
-        headers['Authorization'] = f"Token {token}"
-
-    search = request.GET.get('search', '')
-    page_size = request.GET.get('page_size', settings.REST_FRAMEWORK['PAGE_SIZE'])
 
     paginator = PageNumberPagination()
     paginator.page_size = page_size
@@ -44,9 +41,15 @@ def list(request):
     serializer_data = []
     for data in serializer.data:
         data = dict(data)
-        if data['payment']['status'] == Payment.PENDING:
-            payment = str(data['payment']['id'])
+        if data['payments'][-1]['status'] == Payment.PENDING:
+            id = data['id']
+            payment = str(data['payments'][-1]['id'])
             response = requests.get(settings.REDIRECT_BASE_URL + '/api/payment/retrieve/'+payment+'/', headers=headers)
+
+            if response.status_code == 200:
+                order = Order.objects.get(id=id)
+                serializer = OrderSerializer(order)
+                data = dict(serializer.data)
         for orderdrug in data['orderdrugs']:
             drug = Drug.objects.get(id=orderdrug['drug'])
             orderdrug['name'] = drug.name
@@ -130,7 +133,7 @@ def retrieve(request, id):
     queryset = Order.objects.all()
     order = get_object_or_404(queryset, pk=id)
     serializer = OrderSerializer(order)
-    payment = str(serializer.data['payment']['id'])
+    payment = str(serializer.data['payments'][-1]['id'])
     response = requests.get(settings.REDIRECT_BASE_URL + '/api/payment/retrieve/'+payment+'/', headers=headers)
 
     if response.status_code == 200:
@@ -142,3 +145,63 @@ def retrieve(request, id):
             orderdrug['name'] = drug.name
         return Response(status=HTTP_200_OK, data=data)
     return Response(status=HTTP_400_BAD_REQUEST, data=response.json())
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def delivery(request, id):
+    queryset = Order.objects.all()
+    order = get_object_or_404(queryset, pk=id)
+    serializer = OrderSerializer(order)
+    serializer_data = dict(serializer.data)
+    if serializer_data['payments'][-1]['status'] == Payment.SUCCESSFUL:
+        serializer = OrderSerializer(order, data={'delivery': Order.OUI,}, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=HTTP_200_OK, data=serializer.data)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST, data=serializer.errors)
+    return Response(status=HTTP_400_BAD_REQUEST, data={'errors': {'detail': 'Not authorized.'}})
+
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def payment(request, id):
+    token = request.META.get('HTTP_AUTHORIZATION')
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json; charset=utf-8',
+        'Authorization': token,
+    }
+    queryset = Order.objects.all()
+    order = get_object_or_404(queryset, pk=id)
+    serializer = OrderSerializer(order)
+    serializer_data = dict(serializer.data)
+    if serializer_data['payments'][-1]['status'] == Payment.FAILED:
+        data = {
+            'amount': serializer_data['payments'][-1]['amount'],
+            'currency': serializer_data['payments'][-1]['currency'],
+            'from': serializer_data['phone'],
+            'description': 'Paiement de la commande',
+            'external_reference': '',
+            'order': serializer_data['id'],
+        }
+        response = requests.post(settings.REDIRECT_BASE_URL + '/api/payment/create/', data=json.dumps(data), headers=headers)
+
+        if response.status_code == 200:
+            order = Order.objects.get(id=id)
+            serializer = OrderSerializer(order)
+            data = dict(serializer.data)
+            for orderdrug in data['orderdrugs']:
+                drug = Drug.objects.get(id=orderdrug['drug'])
+                orderdrug['name'] = drug.name
+            return Response(status=HTTP_200_OK, data=data)
+        else:
+            return Response(status=HTTP_400_BAD_REQUEST, data=response.json())
+    return Response(status=HTTP_400_BAD_REQUEST, data={'errors': {'detail': 'Not authorized.'}})
+
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def copy(request, id):
+    token = request.META.get('HTTP_AUTHORIZATION')
+    queryset = Order.objects.all()
+    order = get_object_or_404(queryset, pk=id)

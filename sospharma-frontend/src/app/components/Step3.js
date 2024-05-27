@@ -21,18 +21,22 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                     <th scope="col">ID</th>
                     <th scope="col">Détails</th>
                     <th scope="col">Coût (CFA)</th>
+                    <th scope="col">#</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {formData.stepValue1.map((drug, index) => (
-                    <>
-                      <tr key={index}>
-                        <th scope="row">{`${index + 1}`}</th>
-                        <td>{`${drug.name}`} - {`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`} * {`${formData.stepValue2[index]}`} Qté(s)</td>
-                        <td>{`${new Intl.NumberFormat('de-DE').format(drug.price * formData.stepValue2[index])} CFA`}</td>
-                      </tr>
-                    </>
-                  ))}
+                  {formData.stepValue1.slice().reverse().map((drug, index) => (
+                    <tr key={index}>
+                      <td>{`n° ${formData.stepValue1.length - (index)}.`}</td>
+                      <td>{`${drug.name}`} - {`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`} * {`${formData.stepValue2.slice().reverse()[index]}`} Qté(s)</td>
+                      <td>{`${new Intl.NumberFormat('de-DE').format(drug.price * formData.stepValue2.slice().reverse()[index])} CFA`}</td>
+                      <td>
+                        <a className="btn btn-outline-dark text-body btn-delete" data-name="delete" data-value={`${index}`} href="#" onClick={handleClick}>
+                          <i className="fa fa-trash"></i>
+                        </a>
+                      </td>
+                    </tr>
+                ))}
                 </tbody>
                 <tbody>
                   <tr>

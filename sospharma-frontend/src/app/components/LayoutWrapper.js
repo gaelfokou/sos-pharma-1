@@ -18,18 +18,37 @@ export default function LayoutWrapper({ children }) {
   const propPurgeStoredState = () => dispatch(purgeStoredState());
 
   useEffect(() => {
+    document.title =
+    pathname.startsWith('/login') ?
+      "Connexion | SOS Pharma"
+    :
+    pathname.startsWith('/dashboard') ?
+      "Tableau de bord | SOS Pharma"
+    :
+    pathname.startsWith('/order-drug') ?
+      "Commandez vos médicaments | SOS Pharma"
+    :
+    pathname.startsWith('/order-list') ?
+      "Historique des commandes | SOS Pharma"
+    :
+      "SOS Pharma";
+
     if (version !== VERSION_STATE) {
       propPurgeStoredState();
     }
-  }, []);
+	}, [pathname]);
 
   return (
     <>
-      {pathname.startsWith('/dashboard') ? (<LayoutDashboard>
-        {children}
-      </LayoutDashboard>) : (<LayoutPublic>
-        {children}
-      </LayoutPublic>)}
+      {pathname.startsWith('/dashboard') ? (
+        <LayoutDashboard>
+          {children}
+        </LayoutDashboard>
+      ) : (
+        <LayoutPublic>
+          {children}
+        </LayoutPublic>
+      )}
     </>
   );
 }

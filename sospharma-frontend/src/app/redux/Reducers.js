@@ -1,6 +1,6 @@
 'use client';
 
-import { VERSION_STATE, FETCH_SEARCH_DATA, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
+import { VERSION_STATE, FETCH_SEARCH_DATA, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_DELIVERY, FETCH_ORDER_PAYMENT, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
 
 /* import drug from '../assets/data/drugs.json';
 import geolocation from '../assets/data/geolocation.json';
@@ -72,6 +72,10 @@ const orderReducer = (state = initialState, action) => {
             return { ...state, token: action.payload };
         case FETCH_ORDER_CREATE:
             return { ...state, orderData: [...state.orderData, action.payload] };
+        case FETCH_ORDER_RETRIEVE:
+            return { ...state, orderData: action.payload };
+        case FETCH_ORDER_RETRIEVE:
+            return { ...state, orderData: action.payload };
         case FETCH_ORDER_RETRIEVE:
             return { ...state, orderData: action.payload };
         case FETCH_ORDER_LIST:

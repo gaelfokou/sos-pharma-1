@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
@@ -12,7 +11,7 @@ const App = () => {
     <div className="container">
       <div className="row">
         <div className="col pt-5">
-          <div class="d-flex justify-content-between">
+          <div className="d-flex justify-content-between">
             <a className="h6 font-weight-bold text-success" href="/">SOS Pharma</a>
             {orderData.length > 0 ? (<a className="h6 font-weight-bold text-success" href="/order-list">Historique ({`${orderData.length}`})</a>) : (<a className="h6 font-weight-bold text-success" href="/order-list">Historique</a>)}
           </div>
@@ -22,7 +21,9 @@ const App = () => {
       </div>
       <div className="row">
         <div className="col-md-12 py-5">
-          <a className="btn btn-success text-truncate rounded-lg rounded-after btn-lg btn-block" href="/order-drug">Commandez vos médicaments ici</a>
+          <div className="d-flex justify-content-center">
+            <a className="btn btn-success text-truncate rounded-lg rounded-after btn-lg btn-width-50" href="/order-drug">Commandez vos médicaments ici</a>
+          </div>
         </div>
       </div>
     </div>

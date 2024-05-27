@@ -10,7 +10,7 @@ import moment from 'moment';
 import DataTable from 'react-data-table-component';
 
 import { constants } from '../configs/Constants';
-import { setSearchData, orderList } from '../redux/Actions';
+import { setSearchData, orderDelivery, orderList } from '../redux/Actions';
 
 const Dashboard1 = () => {
 	const { push } = useRouter();
@@ -18,6 +18,7 @@ const Dashboard1 = () => {
 	const { auth, searchData, count, next, previous, results } = useSelector(state => state.order);
 
 	const propSetSearchData = (search) => dispatch(setSearchData(search));
+	const propOrderDelivery = (token, data, callback=null) => dispatch(orderDelivery(token, data, callback));
 	const propOrderList = (token, search='', page=1, page_size=Number.parseInt(constants.PAGE_SIZE)) => dispatch(orderList(token, search, page, page_size));
 
 	const [search, setSearch] = useState(searchData);
@@ -35,6 +36,25 @@ const Dashboard1 = () => {
 		}
 	}, [search, page, pageSize]);
 
+	const handleClick = (event) => {
+		event.preventDefault();
+
+		const name = event.target.attributes.getNamedItem('data-name');
+		const data = event.target.attributes.getNamedItem('data-value');
+		if (name !== null) {
+			if (name.value === "delivery") {
+				const id = Number.parseInt(data.value);
+				const index = results.findIndex((o) => o.id === id);
+				if (index !== -1) {
+					const data = results[index];
+					propOrderDelivery(auth, data, () => {
+						propOrderList(auth, search, page, pageSize);
+					});
+				}
+			}
+		}
+	};
+	
 	const columns = [
 		{
 			name: 'ID',
@@ -62,18 +82,23 @@ const Dashboard1 = () => {
 		},
 		{
 			name: 'Coût (CFA)',
-			selector: row => row.payment,
-			format: (row, index) => `${new Intl.NumberFormat('de-DE').format(row.payment.amount)} CFA`,
+			selector: row => row.payments,
+			format: (row, index) => `${new Intl.NumberFormat('de-DE').format(row.payments[row.payments.length - 1].amount)} CFA`,
 		},
 		{
 			name: 'Statut',
-			selector: row => row.payment,
-			format: (row, index) => row.payment.reason !== null ? constants[row.payment.reason] : constants[row.payment.status],
+			selector: row => row.payments,
+			format: (row, index) => row.payments[row.payments.length - 1].reason !== null ? constants[row.payments[row.payments.length - 1].reason] : constants[row.payments[row.payments.length - 1].status],
 		},
 		{
 			name: 'Date',
 			selector: row => row.created_at,
 			format: (row, index) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
+		},
+		{
+			name: '#',
+			selector: row => row.delivery,
+			cell: (row, index, column, id) => row.payments[row.payments.length - 1].status === constants.PATH_SUCCESSFUL ? (row.delivery === 'Oui' ? 'Livraison effectuée' : (<a className="btn-outline-dark text-body btn-delivery" data-name="delivery" data-value={`${row.id}`} href="#" onClick={handleClick}>Confirmez la livraison</a>)) : '---'
 		},
 	];
 
@@ -99,7 +124,7 @@ const Dashboard1 = () => {
 
 	return (
 		<>
-			<div class="d-flex justify-content-end mt-4">
+			<div className="d-flex justify-content-end mt-4">
 				<form className="form-inline">
 					<div className="input-group input-group-sm">
 						<input
