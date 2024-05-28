@@ -35,7 +35,7 @@ const Step1 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
               </div>
             </div>
           </div>
-          {formData.stepResult1.length > 0 && (<div className="form-group scroll-table">
+          {formData.stepResult1.length > 0 ? (<div className="form-group scroll-table">
             <table className="table table-striped table-hover table-1">
               <tbody>
                 {formData.stepResult1.map((drug, index) => (
@@ -45,7 +45,9 @@ const Step1 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                 ))}
               </tbody>
             </table>
-          </div>)}
+          </div>) : (
+            <div className="form-group form-group-1"></div>
+          )}
           <div className="form-group form-group-label">
             <label className="font-weight-bold text-success mx-per-10">Quelle quantité de ce médicament souhaitez-vous commander ?</label>
           </div>
