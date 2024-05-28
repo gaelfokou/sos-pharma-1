@@ -2,8 +2,9 @@
 
 import moment from 'moment';
 import Cookies from 'js-cookie';
+import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-import { constants, FETCH_SEARCH_DATA, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_DELIVERY, FETCH_ORDER_PAYMENT, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
+import { constants, FETCH_SEARCH_DATA, FETCH_FORM_DATA, FETCH_PURGE_STATE, FETCH_LOAD_DATA, FETCH_TOKEN_CREATE, FETCH_ORDER_CREATE, FETCH_ORDER_RETRIEVE, FETCH_ORDER_DELIVERY, FETCH_ORDER_PAYMENT, FETCH_ORDER_COPY, FETCH_ORDER_LIST, FETCH_AUTH_RETRIEVE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_DATA_FAILURE } from '../configs/Constants';
 import requests from './Requests';
 
 export const fetchFormData = (data) => ({ type: FETCH_FORM_DATA, payload: data });
@@ -14,7 +15,8 @@ export const fetchPaymentToken = (data) => ({ type: FETCH_TOKEN_CREATE, payload:
 export const fetchOrderCreate = (data) => ({ type: FETCH_ORDER_CREATE, payload: data });
 export const fetchOrderRetrieve = (data) => ({ type: FETCH_ORDER_RETRIEVE, payload: data });
 export const fetchOrderDelivery = () => ({ type: FETCH_ORDER_DELIVERY });
-export const fetchOrderPayment = () => ({ type: FETCH_ORDER_PAYMENT });
+export const fetchOrderPayment = (data) => ({ type: FETCH_ORDER_PAYMENT, payload: data });
+export const fetchOrderCopy = (data) => ({ type: FETCH_ORDER_COPY, payload: data });
 export const fetchOrderList = (data) => ({ type: FETCH_ORDER_LIST, payload: data });
 export const fetchAuthRetrieve = (data) => ({ type: FETCH_AUTH_RETRIEVE, payload: data });
 export const fetchDataRequest = () => ({ type: FETCH_DATA_REQUEST });
@@ -42,6 +44,7 @@ export const purgeStoredState = () => {
 export const loadData = () => {
   return async (dispatch) => {
     // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
     try {
       const response = await requests.fetch(`${constants.baseUrl}/api/`, 'POST');
       if (response.ok) {
@@ -75,12 +78,14 @@ export const loadData = () => {
     } catch (error) {
       // dispatch(fetchDataFailure(error.message));
     }
+    // dispatch(hideLoading());
   };
 };
 
 export const paymentToken = () => {
   return async (dispatch) => {
     // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
     try {
       const response = await requests.fetch(`${constants.baseUrl}/api/payment/token/`, 'POST');
       if (response.ok) {
@@ -99,6 +104,7 @@ export const paymentToken = () => {
     } catch (error) {
       // dispatch(fetchDataFailure(error.message));
     }
+    // dispatch(hideLoading());
   };
 };
 
@@ -128,6 +134,7 @@ export const tokenCheck = (token, callback=null) => {
 export const orderCreate = (token, data, callback=null) => {
   return async (dispatch) => {
     dispatch(fetchDataRequest());
+    dispatch(showLoading());
     try {
       const headers = {
         'Authorization': `Token ${token.token}`,
@@ -188,7 +195,8 @@ export const orderCreate = (token, data, callback=null) => {
       } else {
         dispatch({ type: '' });
       }
-}
+    }
+    dispatch(hideLoading());
   };
 };
 
@@ -198,6 +206,7 @@ export const orderRetrieve = (token, data) => {
     data.forEach(async (order, i) => {
       if (order.payments[order.payments.length - 1].status === constants.PATH_PENDING) {
         // dispatch(fetchDataRequest());
+        // dispatch(showLoading());
         try {
           const headers = {
             'Authorization': `Token ${token.token}`,
@@ -218,6 +227,7 @@ export const orderRetrieve = (token, data) => {
         } catch (error) {
           // dispatch(fetchDataFailure(error.message));
         }
+        // dispatch(hideLoading());
       }
     });
   };
@@ -227,6 +237,7 @@ export const orderDelivery = (token, data, callback=null) => {
   return async (dispatch) => {
     if (data.payments[data.payments.length - 1].status === constants.PATH_SUCCESSFUL) {
       // dispatch(fetchDataRequest());
+      // dispatch(showLoading());
       try {
         const headers = {
           'Authorization': `Bearer ${token.access}`,
@@ -251,6 +262,125 @@ export const orderDelivery = (token, data, callback=null) => {
       } catch (error) {
         // dispatch(fetchDataFailure(error.message));
       }
+      // dispatch(hideLoading());
+    }
+  };
+};
+
+export const orderPayment = (token, data, callback=null) => {
+  return async (dispatch) => {
+    if (data.payments[data.payments.length - 1].status === constants.PATH_FAILED) {
+      dispatch(fetchDataRequest());
+      dispatch(showLoading());
+      try {
+        const headers = {
+          'Authorization': `Token ${token.token}`,
+        };
+        const response = await requests.fetch(`${constants.baseUrl}/api/order/payment/${data.id}/`, 'GET', headers);
+        if (response.ok) {
+          const responseData = await response.json();
+          if (response.status === 200) {
+            dispatch(fetchOrderPayment(responseData));
+            dispatch(fetchDataSuccess());
+            if (callback !== null) {
+              dispatch(callback({
+                title: "Success",
+                message: `Veuillez confirmer le paiement à votre numéro de téléphone ${responseData.phone.toString().substr(responseData.phone.toString().length - 9)}`,
+                type: 'success',
+                success: true
+              }));
+            } else {
+              dispatch({ type: '' });
+            }
+          } else {
+            dispatch(fetchDataFailure(responseData));
+            if (callback !== null) {
+              dispatch(callback({
+                title: "Error",
+                message: JSON.stringify(responseData),
+                type: 'error',
+                success: false
+              }));
+            } else {
+              dispatch({ type: '' });
+            }
+          }
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        dispatch(fetchDataFailure(error.message));
+        if (callback !== null) {
+          dispatch(callback({
+            title: "Error",
+            message: JSON.stringify(error.message),
+            type: 'error',
+            success: false
+          }));
+        } else {
+          dispatch({ type: '' });
+        }
+      }
+      dispatch(hideLoading());
+    }
+  };
+};
+
+export const orderCopy = (token, data, callback=null) => {
+  return async (dispatch) => {
+    if (data.payments[data.payments.length - 1].status === constants.PATH_SUCCESSFUL) {
+      dispatch(fetchDataRequest());
+      dispatch(showLoading());
+      try {
+        const headers = {
+          'Authorization': `Token ${token.token}`,
+        };
+        const response = await requests.fetch(`${constants.baseUrl}/api/order/copy/${data.id}/`, 'POST', headers);
+        if (response.ok) {
+          const responseData = await response.json();
+          if (response.status === 200) {
+            dispatch(fetchOrderCopy(responseData));
+            dispatch(fetchDataSuccess());
+            if (callback !== null) {
+              dispatch(callback({
+                title: "Success",
+                message: `Veuillez confirmer le paiement à votre numéro de téléphone ${responseData.phone.toString().substr(responseData.phone.toString().length - 9)}`,
+                type: 'success',
+                success: true
+              }));
+            } else {
+              dispatch({ type: '' });
+            }
+          } else {
+            dispatch(fetchDataFailure(responseData));
+            if (callback !== null) {
+              dispatch(callback({
+                title: "Error",
+                message: JSON.stringify(responseData),
+                type: 'error',
+                success: false
+              }));
+            } else {
+              dispatch({ type: '' });
+            }
+          }
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+      } catch (error) {
+        dispatch(fetchDataFailure(error.message));
+        if (callback !== null) {
+          dispatch(callback({
+            title: "Error",
+            message: JSON.stringify(error.message),
+            type: 'error',
+            success: false
+          }));
+        } else {
+          dispatch({ type: '' });
+        }
+      }
+      dispatch(hideLoading());
     }
   };
 };
@@ -258,6 +388,7 @@ export const orderDelivery = (token, data, callback=null) => {
 export const orderList = (token, search='', page=1, page_size=Number.parseInt(constants.PAGE_SIZE)) => {
   return async (dispatch) => {
     // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
     try {
       const headers = {
         'Authorization': `Bearer ${token.access}`,
@@ -282,12 +413,14 @@ export const orderList = (token, search='', page=1, page_size=Number.parseInt(co
     } catch (error) {
       // dispatch(fetchDataFailure(error.message));
     }
+    // dispatch(hideLoading());
   };
 };
 
 export const authRetrieve = (token) => {
   return async (dispatch) => {
     // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
     try {
       const headers = {
         'Authorization': `Bearer ${token.access}`,
@@ -308,12 +441,14 @@ export const authRetrieve = (token) => {
     } catch (error) {
       // dispatch(fetchDataFailure(error.message));
     }
+    // dispatch(hideLoading());
   };
 };
 
 export const authLogin = (email, password, callback=null) => {
   return async (dispatch) => {
     dispatch(fetchDataRequest());
+    dispatch(showLoading());
     try {
       const params = {
         email,
@@ -328,24 +463,24 @@ export const authLogin = (email, password, callback=null) => {
           dispatch(fetchDataSuccess());
           dispatch(authRetrieve(responseData));
           if (callback !== null) {
-            callback({
+            dispatch(callback({
               title: "Success",
               message: "Connexion effectuée avec succès",
-              type: 'success',
+              type: '',
               success: true
-            });
+            }));
           } else {
             dispatch({ type: '' });
           }
         } else {
           dispatch(fetchDataFailure(responseData));
           if (callback !== null) {
-            callback({
+            dispatch(callback({
               title: "Error",
               message: "Adresse e-mail ou mot de passe incorrect",
-              type: 'error',
+              type: '',
               success: false
-            });
+            }));
           } else {
             dispatch({ type: '' });
           }
@@ -353,12 +488,12 @@ export const authLogin = (email, password, callback=null) => {
       } else {
         dispatch(fetchDataFailure(''));
         if (callback !== null) {
-          callback({
+          dispatch(callback({
             title: "Error",
             message: "Adresse e-mail ou mot de passe incorrect",
-            type: 'error',
+            type: '',
             success: false
-          });
+          }));
         } else {
           dispatch({ type: '' });
         }
@@ -366,26 +501,27 @@ export const authLogin = (email, password, callback=null) => {
     } catch (error) {
       dispatch(fetchDataFailure(error.message));
       if (callback !== null) {
-        callback({
+        dispatch(callback({
           title: "Error",
           message: JSON.stringify(error.message),
-          type: 'error',
+          type: '',
           success: false
-        });
+        }));
       } else {
         dispatch({ type: '' });
       }
     }
+    dispatch(hideLoading());
   };
 };
 
-export const authRefresh = () => {
+export const authRefresh = (token) => {
   return async (dispatch) => {
-    const token = await Cookies.get('token-refresh');
     // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
     try {
       const params = {
-        refresh: token,
+        refresh: token.refresh,
       };
       const response = await requests.fetch(`${constants.baseUrl}/api/auth/token/refresh/`, 'POST', {}, params);
       if (response.ok) {
@@ -394,6 +530,7 @@ export const authRefresh = () => {
           await Cookies.remove('token');
           await Cookies.set('token', responseData.access);
           // dispatch(fetchDataSuccess());
+          dispatch(authRetrieve(responseData));
         } else {
           // dispatch(fetchDataFailure(responseData));
         }
@@ -403,45 +540,46 @@ export const authRefresh = () => {
     } catch (error) {
       // dispatch(fetchDataFailure(error.message));
     }
+    // dispatch(hideLoading());
   };
 };
 
-export const authCheck = (callback=null) => {
+export const authCheck = (token, callback=null) => {
   return async (dispatch) => {
-    const token = await Cookies.get('token');
-    if (token !== null) {
-      // dispatch(fetchDataRequest());
-      try {
-        const params = {
-          token,
-        };
-        const response = await requests.fetch(`${constants.baseUrl}/api/auth/token/verify/`, 'POST', {}, params);
-        if (response.ok) {
-          const responseData = await response.json();
-          if (response.status === 200) {
-            // dispatch(fetchDataSuccess());
-            if (callback !== null) {
-              dispatch(callback(token));
-            } else {
-              dispatch({ type: '' });
-            }
+    // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
+    try {
+      const params = {
+        token: token.access,
+      };
+      const response = await requests.fetch(`${constants.baseUrl}/api/auth/token/verify/`, 'POST', {}, params);
+      if (response.ok) {
+        const responseData = await response.json();
+        if (response.status === 200) {
+          // dispatch(fetchDataSuccess());
+          if (callback !== null) {
+            dispatch(callback(token));
           } else {
-            // dispatch(fetchDataFailure(responseData));
-            authRefresh();
+            dispatch({ type: '' });
           }
         } else {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          // dispatch(fetchDataFailure(responseData));
+          authRefresh(token);
         }
-      } catch (error) {
-        // dispatch(fetchDataFailure(error.message));
+      } else {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
+    } catch (error) {
+      // dispatch(fetchDataFailure(error.message));
     }
+    // dispatch(hideLoading());
   };
 };
 
 export const authLogout = (callback=null) => {
   return async (dispatch) => {
     // dispatch(fetchDataRequest());
+    // dispatch(showLoading());
     await Cookies.remove('token');
     await Cookies.remove('token-refresh');
     // dispatch(fetchDataSuccess());
@@ -451,5 +589,6 @@ export const authLogout = (callback=null) => {
     } else {
       dispatch({ type: '' });
     }
+    // dispatch(hideLoading());
   };
 };

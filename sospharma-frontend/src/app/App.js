@@ -22,7 +22,7 @@ const App = () => {
       <div className="row">
         <div className="col-md-12 py-5">
           <div className="d-flex justify-content-center">
-            <a className="btn btn-success text-truncate rounded-lg rounded-after btn-lg btn-width-50" href="/order-drug">Commandez vos médicaments ici</a>
+            <a className="btn btn-success text-truncate rounded-lg rounded-after btn-lg btn-width-80" href="/order-drug">Commandez vos médicaments ici</a>
           </div>
         </div>
       </div>

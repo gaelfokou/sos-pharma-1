@@ -199,9 +199,34 @@ def payment(request, id):
             return Response(status=HTTP_400_BAD_REQUEST, data=response.json())
     return Response(status=HTTP_400_BAD_REQUEST, data={'errors': {'detail': 'Not authorized.'}})
 
-@api_view(['GET'])
+@api_view(['POST'])
 # @permission_classes([IsAuthenticated])
 def copy(request, id):
     token = request.META.get('HTTP_AUTHORIZATION')
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
+        'Content-Type': 'application/json; charset=utf-8',
+        'Accept': 'application/json; charset=utf-8',
+        'Authorization': token,
+    }
     queryset = Order.objects.all()
     order = get_object_or_404(queryset, pk=id)
+    serializer = OrderSerializer(order)
+    serializer_data = dict(serializer.data)
+    for orderdrug in serializer_data['orderdrugs']:
+        drug = Drug.objects.get(id=orderdrug['drug'])
+        orderdrug['name'] = drug.name
+    drugs = [{'name': drug['name'], 'price': drug['price'], 'quantity': drug['quantity'], 'prescription': drug['prescription']} for drug in serializer_data['orderdrugs']]
+    data = {
+        'name': serializer_data['name'],
+        'phone': serializer_data['phone'],
+        'city': serializer_data['city'],
+        'quarter': serializer_data['quarter'],
+        'drugs': drugs,
+    }
+    response = requests.post(settings.REDIRECT_BASE_URL + '/api/order/create/', data=json.dumps(data), headers=headers)
+
+    if response.status_code == 200:
+        return Response(status=HTTP_200_OK, data=response.json())
+    else:
+        return Response(status=HTTP_400_BAD_REQUEST, data=response.json())

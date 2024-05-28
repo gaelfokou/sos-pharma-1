@@ -14,7 +14,8 @@ import { delay } from '../utils/Helpers';
 const Login = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { orderData, isLoading } = useSelector(state => state.order);
+  const { orderData } = useSelector(state => state.order);
+  const { isLoading } = useSelector(state => state.request);
 
   const propAuthLogin = (email, password, callback=null) => dispatch(authLogin(email, password, callback));
 
@@ -77,7 +78,7 @@ const Login = () => {
         if (isData.success) {
           toast.textContent = isData.message;
           toastAlert.toast('show');
-          delay(function(){
+          delay(function() {
             push('/dashboard');
             setAuthData({ ...authData, email: "", password: "" });
           }, 2500);
@@ -85,6 +86,7 @@ const Login = () => {
           toast.textContent = isData.message;
           toastAlert.toast('show');
         }
+        return { type: '' };
       });
     }
   };
@@ -108,16 +110,8 @@ const Login = () => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col pt-5">
-          <div className="d-flex justify-content-between">
-            <a className="h6 font-weight-bold text-success" href="/">SOS Pharma</a>
-            {orderData.length > 0 ? (<a className="h6 font-weight-bold text-success" href="/order-list">Historique ({`${orderData.length}`})</a>) : (<a className="h6 font-weight-bold text-success" href="/order-list">Historique</a>)}
-          </div>
-        </div>
-      </div>
-      <div className="row">
         <div className="col-md-12 py-5">
-          <div className="card form-slide active">
+          <div className="card login form-slide active">
             <div className="card-header text-center">
               <h6 className="card-title">Connexion</h6>
             </div>

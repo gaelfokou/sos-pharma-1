@@ -10,13 +10,14 @@ import moment from 'moment';
 import DataTable from 'react-data-table-component';
 
 import { constants } from '../configs/Constants';
-import { setSearchData, orderDelivery, orderList } from '../redux/Actions';
+import { authCheck, setSearchData, orderDelivery, orderList } from '../redux/Actions';
 
 const Dashboard1 = () => {
 	const { push } = useRouter();
 	const dispatch = useDispatch();
 	const { auth, searchData, count, next, previous, results } = useSelector(state => state.order);
 
+	const propAuthCheck = (token, callback=null) => dispatch(authCheck(token, callback));
 	const propSetSearchData = (search) => dispatch(setSearchData(search));
 	const propOrderDelivery = (token, data, callback=null) => dispatch(orderDelivery(token, data, callback));
 	const propOrderList = (token, search='', page=1, page_size=Number.parseInt(constants.PAGE_SIZE)) => dispatch(orderList(token, search, page, page_size));
@@ -30,9 +31,15 @@ const Dashboard1 = () => {
 
 		propSetSearchData(search);
 		if (search === "") {
-			propOrderList(auth, search, page, pageSize);
+			propAuthCheck(auth, (tokenData) => {
+				propOrderList(tokenData, search, page, pageSize);
+				return { type: '' };
+			});
 		} else if (search.length >= 3) {
-			propOrderList(auth, search, page, pageSize);
+			propAuthCheck(auth, (tokenData) => {
+				propOrderList(tokenData, search, page, pageSize);
+				return { type: '' };
+			});
 		}
 	}, [search, page, pageSize]);
 
@@ -47,8 +54,12 @@ const Dashboard1 = () => {
 				const index = results.findIndex((o) => o.id === id);
 				if (index !== -1) {
 					const data = results[index];
-					propOrderDelivery(auth, data, () => {
-						propOrderList(auth, search, page, pageSize);
+					propAuthCheck(auth, (tokenData) => {
+						propOrderDelivery(tokenData, data, () => {
+							propOrderList(tokenData, search, page, pageSize);
+							return { type: '' };
+						});
+						return { type: '' };
 					});
 				}
 			}
@@ -92,8 +103,8 @@ const Dashboard1 = () => {
 		},
 		{
 			name: 'Date',
-			selector: row => row.created_at,
-			format: (row, index) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
+			selector: row => row.payments,
+			format: (row, index) => moment(row.payments[row.payments.length - 1].created_at).format('DD-MM-YYYY HH:mm:ss'),
 		},
 		{
 			name: '#',

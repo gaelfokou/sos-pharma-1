@@ -2,8 +2,8 @@ import ReducerLayout from "./redux/ReducerLayout";
 import LayoutWrapper from "./components/LayoutWrapper";
 
 export const metadata = {
-  title: "SOS Pharma",
-  description: "Livraison de médicaments à domicile",
+  title: "SOS Pharma - Commandez vos médicaments en ligne",
+  description: "SOS Pharma vous permet de commander vos médicaments en ligne, et vous faire livrer partout au Cameroun. 100% sécurisé, 100% garantie. Essayez maintenant.",
   icons: {
     icon: {
       rel: "icon",

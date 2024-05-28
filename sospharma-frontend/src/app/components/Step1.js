@@ -16,7 +16,7 @@ const Step1 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           <div className="form-group form-group-label">
             <label className="font-weight-bold text-success mx-per-10">Quel médicament souhaitez-vous commander ?</label>
           </div>
-          <div className="form-group form-group-1">
+          <div className="form-group form-group-1 form-group-none">
             <label className="sr-only" htmlFor="inlineFormInputGroup11">Tapez votre réponse ici...</label>
             <div className="input-group">
               <input
@@ -80,7 +80,7 @@ const Step1 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           <div className="form-group form-group-label">
             <label className="font-weight-bold text-success mx-per-10">Ce médicament est-il une prescription médicale ?</label>
           </div>
-          <div className="form-group form-group-1 form-group-radio form-group-radio-none">
+          <div className="form-group form-group-1 form-group-radio form-group-none">
             <label className="sr-only" htmlFor="inlineFormInputGroup13">Tapez votre réponse ici...</label>
             <div className="input-group">
               <input

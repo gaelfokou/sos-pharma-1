@@ -26,6 +26,7 @@
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18",
     "react-redux": "^9.1.2",
+    "react-redux-loading-bar": "^5.0.8",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",

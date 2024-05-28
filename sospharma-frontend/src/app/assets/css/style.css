@@ -5,8 +5,8 @@
 .btn.btn-width-30 {
   width: 30% !important;
 }
-.btn.btn-width-50 {
-  width: 50% !important;
+.btn.btn-width-80 {
+  width: 80% !important;
 }
 .btn.rounded-lg.rounded-before::before {
   display: inline-block;
@@ -59,8 +59,11 @@ p {
 .card-body .form-group.form-group-label {
   margin-bottom: .5rem !important;
 }
-.card-body .form-group.form-group-radio-none {
+.card-body .form-group.form-group-none {
   margin-bottom: .1rem !important;
+}
+.login .card-body .form-group.row {
+  margin-bottom: .8rem !important;
 }
 .card-footer {
   background: transparent !important;
@@ -343,6 +346,14 @@ label {
   }
   .card-body .form-group.row:last-of-type {
     margin-top: .5rem !important;
+  }
+  .login .card-body .form-group.row:last-of-type {
+    margin-top: .5rem !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .login .card-body .form-group.row:first-of-type {
+    margin-bottom: 0 !important;
   }
 }
 .toast-alert {

@@ -18,10 +18,10 @@ export default function LayoutDashboard({ children }) {
   const dispatch = useDispatch();
   const { auth } = useSelector(state => state.order);
 
-  const propAuthCheck = (callback=null) => dispatch(authCheck(callback));
+	const propAuthCheck = (token, callback=null) => dispatch(authCheck(token, callback));
 
   useEffect(() => {
-    propAuthCheck();
+    propAuthCheck(auth);
   }, []);
 
   return (

@@ -20,18 +20,18 @@ export default function LayoutWrapper({ children }) {
   useEffect(() => {
     document.title =
     pathname.startsWith('/login') ?
-      "Connexion | SOS Pharma"
+      "SOS Pharma - Connexion"
     :
     pathname.startsWith('/dashboard') ?
-      "Tableau de bord | SOS Pharma"
+      "SOS Pharma - Tableau de bord"
     :
     pathname.startsWith('/order-drug') ?
-      "Commandez vos médicaments | SOS Pharma"
+      "SOS Pharma - Commandez vos médicaments"
     :
     pathname.startsWith('/order-list') ?
-      "Historique des commandes | SOS Pharma"
+      "SOS Pharma - Historique des commandes"
     :
-      "SOS Pharma";
+      "SOS Pharma - Commandez vos médicaments en ligne";
 
     if (version !== VERSION_STATE) {
       propPurgeStoredState();
@@ -45,9 +45,15 @@ export default function LayoutWrapper({ children }) {
           {children}
         </LayoutDashboard>
       ) : (
-        <LayoutPublic>
-          {children}
-        </LayoutPublic>
+        pathname.startsWith('/login') ? (
+          <LayoutDashboard>
+            {children}
+          </LayoutDashboard>
+        ) : (
+          <LayoutPublic>
+            {children}
+          </LayoutPublic>
+        )
       )}
     </>
   );

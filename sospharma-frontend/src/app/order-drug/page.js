@@ -19,7 +19,8 @@ import Step3 from '../components/Step3';
 const OrderDrug = () => {
   const { push } = useRouter();
   const dispatch = useDispatch();
-  const { token, formData, drugData, cityData, quarterData, orderData, isLoading } = useSelector(state => state.order);
+  const { token, formData, drugData, cityData, quarterData, orderData } = useSelector(state => state.order);
+  const { isLoading } = useSelector(state => state.request);
 
   const propFormData = (data) => dispatch(setFormData(data));
   const propTokenCheck = (token, callback=null) => dispatch(tokenCheck(token, callback));
@@ -204,7 +205,7 @@ const OrderDrug = () => {
           if (isData.success) {
             toast.textContent = isData.message;
             toastAlert.toast('show');
-            delay(function(){
+            delay(function() {
               push('/order-list');
               propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
             }, 2500);
