@@ -25,23 +25,31 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
                   </tr>
                 </thead>
                 <tbody>
-                  {formData.stepValue1.slice().reverse().map((drug, index) => (
-                    <tr key={index}>
-                      <td>{`n° ${formData.stepValue1.length - (index)}.`}</td>
-                      <td>{`${drug.name}`} - {`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`} * {`${formData.stepValue2.slice().reverse()[index]}`} Qté(s)</td>
-                      <td>{`${new Intl.NumberFormat('de-DE').format(drug.price * formData.stepValue2.slice().reverse()[index])} CFA`}</td>
-                      <td>
-                        <a className="btn btn-outline-dark text-body btn-delete" data-name="delete" data-value={`${index}`} href="#" onClick={handleClick}>
-                          <i className="fa fa-trash"></i>
-                        </a>
-                      </td>
+                  {formData.stepValue1.length > 0 ? (
+                    formData.stepValue1.slice().reverse().map((drug, index) => (
+                      <tr key={index}>
+                        <td>{`n° ${formData.stepValue1.length - (index)}.`}</td>
+                        <td>{`${drug.name}`} - {`${new Intl.NumberFormat('de-DE').format(drug.price)} CFA`} * {`${formData.stepValue2.slice().reverse()[index]}`} Qté(s)</td>
+                        <td>{`${new Intl.NumberFormat('de-DE').format(drug.price * formData.stepValue2.slice().reverse()[index])} CFA`}</td>
+                        <td>
+                          <a className="btn btn-outline-dark text-body btn-delete" data-name="delete" data-value={`${index}`} href="#" onClick={handleClick}>
+                            <i className="fa fa-trash"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <th scope="col"></th>
+                      <td colspan="2">Pas de médicaments disponibles...</td>
+                      <th scope="col"></th>
                     </tr>
-                ))}
+                  )}
                 </tbody>
                 <tbody>
                   <tr>
                     <th scope="col"></th>
-                    <th scope="col">Total de la commande</th>
+                    <th scope="col" colspan="2">Total de la commande</th>
                     <td>{`${new Intl.NumberFormat('de-DE').format(formData.stepValue1.reduce((n, { price }, index) => n + price * formData.stepValue2[index], 0))} CFA`}</td>
                   </tr>
                 </tbody>
@@ -50,7 +58,9 @@ const Step3 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
           </div>
           <div className="form-group">
             <button type="submit" name="cancel" className="btn btn-outline-success text-truncate rounded-lg btn-width-30">Annulez</button>
-            {isLoading ? (<button type="submit" name="load" className="btn btn-success text-truncate rounded-lg btn-width-30" disabled><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Traitement en cours...</button>) : (<button type="submit" name="pay" className="btn btn-success text-truncate rounded-lg btn-width-30">Payez</button>)}
+            {formData.stepValue1.reduce((n, { price }, index) => n + price * formData.stepValue2[index], 0) > 0 && (
+              isLoading ? (<button type="submit" name="load" className="btn btn-success text-truncate rounded-lg btn-width-30" disabled><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Traitement en cours...</button>) : (<button type="submit" name="pay" className="btn btn-success text-truncate rounded-lg btn-width-30">Payez</button>)
+            )}
           </div>
         </form>
       </div>

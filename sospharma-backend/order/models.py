@@ -2,6 +2,10 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from drug.models import Drug
 import uuid
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 class Order(models.Model):
     name = models.CharField(_('Name'), max_length=255, blank=True, null=True, default=None)
@@ -28,6 +32,13 @@ class Order(models.Model):
 
     def __str__(self):
         return "{}".format(self.name)
+
+    @staticmethod
+    def thread_send_mail(data):
+        msg_html = render_to_string('order/email/new_payment.html', {'data': data})
+        msg_html = msg_html.replace('\n', '').replace('\r', '')
+        msg_plain = strip_tags(msg_html)
+        send_mail('Nouvelle commande', msg_plain, settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_TO_EMAIL], fail_silently=False, html_message=msg_html)
 
 class OrderDrug(models.Model):
     price = models.DecimalField(_('Price'), max_digits=10, decimal_places=2, blank=True, null=True, default=None)

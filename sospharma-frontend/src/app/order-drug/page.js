@@ -382,7 +382,7 @@ const OrderDrug = () => {
       stepResult1 = [];
     } else if (drug.length >= 3) {
       stepResult1 = [];
-      stepResult1 = drugData.filter((d) => d.name.toLowerCase().includes(drug.toLowerCase()));
+      stepResult1 = drugData.filter((d) => drug.toLowerCase().split(' ').some(dr => d.name.toLowerCase().includes(dr.trim())));
     }
     /* const n = 100;
     if (stepResult1.length > n) {

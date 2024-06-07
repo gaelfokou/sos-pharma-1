@@ -67,7 +67,7 @@ ROOT_URLCONF = 'sospharma.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'sospharma/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -195,6 +195,16 @@ SIMPLE_JWT = {
 SITE_ID = 1
 
 REDIRECT_BASE_URL = 'http://127.0.0.1:8000'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'drifterzt@gmail.com'
+SENDGRID_API_KEY = 'expavckpanxauirw'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_TO_EMAIL = 'gaelfokou.9@gmail.com'
 
 CAMPAY_URL = 'https://www.campay.net'
 CAMPAY_APP_USERNAME = 'A101eg44VyWJgbc9HJYk-b8A3MSER8Bs7q53japFpTQjIyp2pMLAWua_Jv9xJaAS-X-BKRzM4SQR6GI3r0LMxA'

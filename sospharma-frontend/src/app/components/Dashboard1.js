@@ -155,7 +155,7 @@ const Dashboard1 = () => {
 				title="Liste des commandes"
 				columns={columns}
 				data={results}
-				noDataComponent="Il n'y a pas de commandes à afficher..."
+				noDataComponent="Pas de commandes disponibles..."
 				pagination
 				paginationComponentOptions={paginationComponentOptions}
 				paginationServer

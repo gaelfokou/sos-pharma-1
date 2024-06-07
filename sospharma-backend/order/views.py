@@ -15,6 +15,7 @@ from payment.models import Payment
 from .serializers import OrderSerializer, OrderDrugSerializer
 from django.shortcuts import get_object_or_404
 from django.http.request import QueryDict
+import threading
 
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
@@ -32,8 +33,7 @@ def list(request):
 
     paginator = PageNumberPagination()
     paginator.page_size = page_size
-    orders = Order.objects.all()
-    orders = orders.filter(
+    orders = Order.objects.filter(
         (Q(name__icontains=search) | Q(phone__icontains=search) | Q(city__icontains=search) | Q(quarter__icontains=search) | Q(drugs__in=Drug.objects.filter(name__icontains=search)))
     ).distinct().order_by('-id')
     context = paginator.paginate_queryset(orders, request)
@@ -41,6 +41,8 @@ def list(request):
     serializer_data = []
     for data in serializer.data:
         data = dict(data)
+        previous_status = data['payments'][-1]['status']
+        current_status = data['payments'][-1]['status']
         if data['payments'][-1]['status'] == Payment.PENDING:
             id = data['id']
             payment = str(data['payments'][-1]['id'])
@@ -50,10 +52,14 @@ def list(request):
                 order = Order.objects.get(id=id)
                 serializer = OrderSerializer(order)
                 data = dict(serializer.data)
+                current_status = data['payments'][-1]['status']
         for orderdrug in data['orderdrugs']:
             drug = Drug.objects.get(id=orderdrug['drug'])
             orderdrug['name'] = drug.name
         serializer_data.append(data)
+        if previous_status == Payment.PENDING and current_status == Payment.SUCCESSFUL:
+            th = threading.Thread(target=Order.thread_send_mail, args=(data,), daemon=True)
+            th.start()
     return paginator.get_paginated_response(serializer_data)
 
 @api_view(['POST'])
@@ -133,18 +139,25 @@ def retrieve(request, id):
     queryset = Order.objects.all()
     order = get_object_or_404(queryset, pk=id)
     serializer = OrderSerializer(order)
-    payment = str(serializer.data['payments'][-1]['id'])
-    response = requests.get(settings.REDIRECT_BASE_URL + '/api/payment/retrieve/'+payment+'/', headers=headers)
+    data = dict(serializer.data)
+    previous_status = data['payments'][-1]['status']
+    current_status = data['payments'][-1]['status']
+    if data['payments'][-1]['status'] == Payment.PENDING:
+        payment = str(data['payments'][-1]['id'])
+        response = requests.get(settings.REDIRECT_BASE_URL + '/api/payment/retrieve/'+payment+'/', headers=headers)
 
-    if response.status_code == 200:
-        order = Order.objects.get(id=id)
-        serializer = OrderSerializer(order)
-        data = dict(serializer.data)
-        for orderdrug in data['orderdrugs']:
-            drug = Drug.objects.get(id=orderdrug['drug'])
-            orderdrug['name'] = drug.name
-        return Response(status=HTTP_200_OK, data=data)
-    return Response(status=HTTP_400_BAD_REQUEST, data=response.json())
+        if response.status_code == 200:
+            order = Order.objects.get(id=id)
+            serializer = OrderSerializer(order)
+            data = dict(serializer.data)
+            current_status = data['payments'][-1]['status']
+    for orderdrug in data['orderdrugs']:
+        drug = Drug.objects.get(id=orderdrug['drug'])
+        orderdrug['name'] = drug.name
+    if previous_status == Payment.PENDING and current_status == Payment.SUCCESSFUL:
+        th = threading.Thread(target=Order.thread_send_mail, args=(data,), daemon=True)
+        th.start()
+    return Response(status=HTTP_200_OK, data=data)
 
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
