@@ -434,3 +434,7 @@ label {
 .rdt_TableBody div[data-tag="allowRowEvents"] {
   white-space: break-spaces !important;
 }
+.alert {
+  margin-bottom: 0 !important;
+  border-radius: 0 !important;
+}

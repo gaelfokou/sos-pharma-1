@@ -1,5 +1,6 @@
 import ReducerLayout from "./redux/ReducerLayout";
 import LayoutWrapper from "./components/LayoutWrapper";
+import NetworkProvider from "./utils/NetworkContext";
 
 export const metadata = {
   title: "SOS Pharma - Commandez vos médicaments en ligne",
@@ -19,9 +20,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ReducerLayout>
-          <LayoutWrapper>
-            {children}
-          </LayoutWrapper>
+          <NetworkProvider>
+            <LayoutWrapper>
+              {children}
+            </LayoutWrapper>
+          </NetworkProvider>
         </ReducerLayout>
       </body>
     </html>
