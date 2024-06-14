@@ -9,34 +9,11 @@ import { purgeStoredState } from '../redux/Actions';
 
 import LayoutPublic from "../components/LayoutPublic";
 import LayoutDashboard from "../components/LayoutDashboard";
-import { useNetworkCheck } from "../utils/NetworkContext";
-
-const NetworkCheck = ({ status }) => {
-  return (
-    <div className={`alert ${status ? 'alert-success' : 'alert-danger'}`} role="alert">
-      {status ? 'Vous êtes en ligne !' : 'Vous avez perdu la connexion réseau !'}
-    </div>
-  );
-};
-
-const isWebview = () => {
-  const userAgent = navigator.userAgent
-  const normalizedUserAgent = userAgent.toLowerCase()
-  const standalone = navigator.standalone
-
-  const isIos = /ip(ad|hone|od)/.test(normalizedUserAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  const isAndroid = /android/.test(normalizedUserAgent)
-  const isSafari = /safari/.test(normalizedUserAgent)
-  const isWebview = (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari)
-
-  return isWebview
-}
 
 export default function LayoutWrapper({ children }) {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const { version } = useSelector(state => state.order);
-  const { isOnline } = useNetworkCheck();
 
   const propPurgeStoredState = () => dispatch(purgeStoredState());
 
@@ -63,7 +40,6 @@ export default function LayoutWrapper({ children }) {
 
   return (
     <>
-      {(!isWebview() && !isOnline) && <NetworkCheck status={isOnline} />}
       {pathname.startsWith('/dashboard') ? (
         <LayoutDashboard>
           {children}
