@@ -1,4 +1,4 @@
-.btn.rounded-lg {
+.btn.rounded-btn {
   border-radius: 1.5rem !important;
   font-size: .9rem;
 }
@@ -8,12 +8,12 @@
 .btn.btn-width-80 {
   width: 80% !important;
 }
-.btn.rounded-lg.rounded-before::before {
+.btn.rounded-btn.rounded-before::before {
   display: inline-block;
   content: "<--";
   margin-right: 10px;
 }
-.btn.rounded-lg.rounded-after::after {
+.btn.rounded-btn.rounded-after::after {
   display: inline-block;
   content: "-->";
   margin-left: 10px;
@@ -69,7 +69,7 @@ p {
   background: transparent !important;
   border-radius: 0 0 calc(1.25rem - 1px) calc(1.25rem - 1px) !important;
 }
-.card-footer .btn.rounded-lg:last-of-type {
+.card-footer .btn.rounded-btn:last-of-type {
   margin-left: .1rem !important;
 }
 .justify-content-end {
@@ -437,4 +437,10 @@ label {
 .alert {
   margin-bottom: 0 !important;
   border-radius: 0 !important;
+}
+.modal-content.rounded-modal {
+  border-radius: 1.0rem !important;
+}
+.v-hidden {
+  visibility: hidden !important;
 }

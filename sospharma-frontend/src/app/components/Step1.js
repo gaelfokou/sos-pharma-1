@@ -131,18 +131,18 @@ const Step1 = ({page, handleNext, handlePrevious, handleClick, handleSubmit, han
             </div>
           </div>
           <div className="form-group">
-            <button type="submit" name="add" className="btn btn-outline-success text-truncate rounded-lg btn-width-30">Ajoutez un autre médicament</button>
-            <button type="submit" name="submit" className="btn btn-success text-truncate rounded-lg rounded-after btn-width-30">Suivant</button>
+            <button type="submit" name="add" className="btn btn-outline-success text-truncate rounded-btn btn-width-30">Ajoutez un autre médicament</button>
+            <button type="submit" name="submit" className="btn btn-success text-truncate rounded-btn rounded-after btn-width-30">Suivant</button>
           </div>
         </form>
       </div>
       <div className="card-footer text-right">
         <div className="d-flex justify-content-end">
           {page > 1 && (
-            <button type="button" className="btn btn-success text-truncate rounded-lg" onClick={handlePrevious}>{`<`}</button>
+            <button type="button" className="btn btn-success text-truncate rounded-btn" onClick={handlePrevious}>{`<`}</button>
           )}
           {page < 3 && (
-            <button type="button" className="btn btn-success text-truncate rounded-lg" onClick={handleClick}>{`>`}</button>
+            <button type="button" className="btn btn-success text-truncate rounded-btn" onClick={handleClick}>{`>`}</button>
           )}
         </div>
       </div>

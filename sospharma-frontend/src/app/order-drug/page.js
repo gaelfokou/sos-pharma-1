@@ -164,10 +164,24 @@ const OrderDrug = () => {
     });
   };
 
+  const showModal = (confirmPayModal) => {
+    const target = $(confirmPayModal);
+    target.on('shown.bs.modal', function (event) {
+    });
+    target.modal('show');
+  };
+
+  const hideModal = (confirmPayModal) => {
+    const target = $(confirmPayModal);
+    target.on('hidden.bs.modal', function (event) {
+    });
+    target.modal('hide');
+  };
+
   const handleClick = (event) => {
     event.preventDefault();
 
-    const name = event.target.parentNode.attributes.getNamedItem('data-name');
+    var name = event.target.parentNode.attributes.getNamedItem('data-name');
     const data = event.target.parentNode.attributes.getNamedItem('data-value');
     if (name !== null) {
       if (page === 3) {
@@ -183,8 +197,15 @@ const OrderDrug = () => {
         }
       }
     } else {
-      const button = document.querySelector('#form-'+page+' button[type="submit"][name="submit"]');
-      button.click();
+      name = event.target.attributes.getNamedItem('data-name');
+      if (name !== null) {
+        if (name.value === "confirm-pay") {
+          showModal('#confirmPayModal');
+        }
+      } else {
+        const button = document.querySelector('#form-'+page+' button[type="submit"][name="submit"]');
+        button.click();
+      }
     }
   };
 
@@ -198,6 +219,50 @@ const OrderDrug = () => {
     if (submitter === "cancel") {
       propFormData({ ...formData, step1: "", stepValue1: [], stepResult1: [], step2: "", stepValue2: [], step3: "", stepValue3: [], step4: "" });
       setPage(1);
+    } else if (submitter === "close-confirm-pay") {
+      var validForm = form.checkValidity();
+      if (validForm) {
+        if (button.classList.contains('invalid')) {
+          button.classList.remove('invalid');
+        }
+        inputs.forEach(input => {
+          if (input.classList.contains('invalid')) {
+            input.classList.remove('invalid');
+          }
+        });
+        inputs.forEach(input => {
+          if (input.classList.contains('valid')) {
+            input.classList.remove('valid');
+          }
+        });
+        inputs.forEach(input => {
+          if (!input.classList.contains('valid')) {
+            input.classList.add('valid');
+          }
+        });
+      } else {
+        if (!button.classList.contains('invalid')) {
+          button.classList.add('invalid');
+        }
+        inputs.forEach(input => {
+          if (!input.classList.contains('invalid')) {
+            input.classList.add('invalid');
+          }
+        });
+        inputs.forEach(input => {
+          if (input.classList.contains('valid')) {
+            input.classList.remove('valid');
+          }
+        });
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+      if (validForm) {
+        hideModal('#confirmPayModal');
+        console.log('totototo page :', page);
+        const payBtn = document.querySelector('#form-'+page+'1 button[type="submit"][name="pay"]');
+        payBtn.click();
+      }
     } else if (submitter === "pay") {
       propTokenCheck(token, (tokenData) => {
         propOrderCreate(tokenData, formData, (isData) => {
@@ -359,6 +424,10 @@ const OrderDrug = () => {
         propFormData({ ...formData, [name]: value, stepResult8: searchQuarter });
       } else {
         propFormData({ ...formData, [name]: value });
+      }
+    } else if (page === 3) {
+      if (name === "step6") {
+        propFormData({ ...formData, [name]: value.slice(0, maxLength) });
       }
     } else {
       propFormData({ ...formData, [name]: value });

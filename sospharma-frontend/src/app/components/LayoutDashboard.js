@@ -14,7 +14,7 @@ import { authCheck } from '../redux/Actions';
 import Header from "./Header";
 import Footer from "./Footer";
 
-export default function LayoutDashboard({ children }) {
+export default function LayoutDashboard({ children, deferredPrompt }) {
   const dispatch = useDispatch();
   const { auth } = useSelector(state => state.order);
 
@@ -27,7 +27,7 @@ export default function LayoutDashboard({ children }) {
   return (
     <div className="d-flex flex-column justify-content-between vh-100">
       <div className="d-flex flex-column flex-grow-1">
-        <Header />
+        <Header deferredPrompt={deferredPrompt} />
         {children}
       </div>
       <Footer />

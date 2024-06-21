@@ -151,7 +151,7 @@ const Login = () => {
                 </div>
                 <div className="form-group row">
                   <div className="col text-center">
-                    {isLoading ? (<button type="submit" name="load" className="btn btn-success text-truncate rounded-lg btn-width-30" disabled><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Traitement en cours...</button>) : (<button type="submit" name="submit" className="btn btn-success text-truncate rounded-lg btn-width-30">Connexion</button>)}
+                    {isLoading ? (<button type="submit" name="load" className="btn btn-success text-truncate rounded-btn btn-width-30" disabled><span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Traitement en cours...</button>) : (<button type="submit" name="submit" className="btn btn-success text-truncate rounded-btn btn-width-30">Connexion</button>)}
                   </div>
                 </div>
               </form>

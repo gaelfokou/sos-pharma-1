@@ -17,8 +17,10 @@ export default function LayoutWrapper({ children }) {
 
   const propPurgeStoredState = () => dispatch(purgeStoredState());
 
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
   useEffect(() => {
-    document.title =
+    const title =
     pathname.startsWith('/login') ?
       "SOS Pharma - Connexion"
     :
@@ -36,21 +38,78 @@ export default function LayoutWrapper({ children }) {
     if (version !== VERSION_STATE) {
       propPurgeStoredState();
     }
-	}, [pathname]);
+
+    document.title = title;
+
+    const addBtn = document.querySelector('.btn-prompt');
+
+    window.addEventListener('beforeinstallprompt', handleEvent);
+
+    if (addBtn !== null) {
+      addBtn.addEventListener('click', handleBtn);
+    }
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleEvent);
+
+      if (addBtn !== null) {
+        addBtn.removeEventListener('click', handleBtn);
+      }
+    }
+	}, [pathname, deferredPrompt]);
+
+  const handleEvent = (event) => {
+    event.preventDefault();
+
+    setDeferredPrompt(event);
+  };
+
+  const handleBtn = async (event) => {
+    event.preventDefault();
+
+    const title = document.title;
+
+    document.title = title.split(' - ')[0];
+    console.log('title 1 :', document.title);
+    console.log('deferredPrompt :', deferredPrompt);
+
+    if (deferredPrompt !== null) {
+      deferredPrompt.prompt();
+
+      const { outcome } = await deferredPrompt.userChoice;
+
+      if (outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+    }
+
+    document.title = title;
+    console.log('title 2 :', document.title);
+
+    setDeferredPrompt(null);
+  };
 
   return (
     <>
       {pathname.startsWith('/dashboard') ? (
-        <LayoutDashboard>
+        <LayoutDashboard
+          deferredPrompt={deferredPrompt}
+        >
           {children}
         </LayoutDashboard>
       ) : (
         pathname.startsWith('/login') ? (
-          <LayoutDashboard>
+          <LayoutDashboard
+            deferredPrompt={deferredPrompt}
+          >
             {children}
           </LayoutDashboard>
         ) : (
-          <LayoutPublic>
+          <LayoutPublic
+            deferredPrompt={deferredPrompt}
+          >
             {children}
           </LayoutPublic>
         )
